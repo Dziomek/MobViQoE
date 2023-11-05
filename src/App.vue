@@ -1,4 +1,8 @@
 <script setup>
+	import { provide } from 'vue'
+	
+	const appElement = document.getElementById('app')
+	provide('appElement', appElement)
 </script>
 
 <template>
@@ -6,5 +10,4 @@
 </template>
 
 <style scoped>
-
 </style>

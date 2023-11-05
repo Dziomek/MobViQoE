@@ -3,8 +3,8 @@ import StartView from "./views/StartView.vue"
 import SessionView from "./views/SessionView.vue"
 
 const routes = [
-    { path: '/', component: SessionView },
-    { path: '/session', component: SessionView }
+    { path: '/', name: 'start', component: StartView },
+    { path: '/session', name: 'session', component: SessionView }
 ]
 
 export const router = createRouter({
