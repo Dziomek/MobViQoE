@@ -1,8 +1,97 @@
 <template>
-    <div class="absolute top-0 left-0 w-full h-full z-10 flex items-center justify-center bg-layer-color">
-		AssessmentLayer
+    <div id="assessment-layer" class="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center bg-layer-color text-light py-16 gap-16">
+		<h1>How can you evaluate the video quality?</h1>
+		<div class="flex gap-20">
+			<div class="flex items-center gap-2">
+        		<RadioButton v-model="assessment" name="excellent" value="Excellent" />
+        		<label class="text-xl" for="excellent">Excellent</label>
+    		</div>
+    		<div class="flex items-center gap-2">
+        		<RadioButton v-model="assessment" name="good" value="Good" />
+        		<label class="text-xl" for="good">Good</label>
+    		</div>
+			<div class="flex items-center gap-2">
+				<RadioButton v-model="assessment" name="fair" value="Fair" />
+				<label class="text-xl" for="fair">Fair</label>
+			</div>
+			<div class="flex items-center gap-2">
+				<RadioButton v-model="assessment" name="poor" value="Poor" />
+				<label class="text-xl" for="poor">Poor</label>
+			</div>
+			<div class="flex items-center gap-2">
+				<RadioButton v-model="assessment" name="bad" value="Bad" />
+				<label class="text-xl" for="bad">Bad</label>
+			</div>
+			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
+		</div>
+		<Button :disabled="!assessment" @click="submitAssessment" label="Next video" outlined size="large" />
+		
 	</div>
 </template>
 
 <script setup>
+import RadioButton from 'primevue/radiobutton'
+import Button from 'primevue/button'
+import { onMounted, ref } from 'vue'
+
+const assessment = ref(null)
+const accAvg = ref(getAccAvg())
+
+const emits = defineEmits(['nextVideo'])
+
+const props = defineProps({
+	videoId: {
+		type: Number,
+		required: true,
+		default: 0
+	},
+	accMeasurements: {
+		type: Array,
+		required: true,
+		default: []
+	},
+	gyroMeasurements: {
+		type: Array,
+		required: true,
+		default: []
+	}
+})
+
+function submitAssessment() {
+	emits('nextVideo')
+}
+
+function getAccAvg() {
+	const dataLength = props.accMeasurements.length
+	const recuded = props.accMeasurements.reduce((acc, val) => {
+		acc.x += val.x
+		acc.y += val.y
+		acc.z += val.z
+		return acc
+	}, { x: 0, y: 0, z: 0 })
+	
+	return {
+		x: recuded.x / dataLength,
+		y: recuded.y / dataLength,
+		z: recuded.z / dataLength
+	}
+}
+
 </script>
+
+<style>
+#assessment-layer .p-radiobutton .p-radiobutton-box {
+	width: 3rem !important;
+	height: 3rem !important;
+}
+
+#assessment-layer .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
+	width: 2.25rem !important;
+	height: 2.25rem !important;
+}
+
+#assessment-layer .p-radiobutton {
+	width: 3rem !important;
+	height: 3rem !important;
+}
+</style>
