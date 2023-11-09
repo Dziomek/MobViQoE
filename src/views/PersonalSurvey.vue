@@ -61,7 +61,7 @@
 </template>
 
 <script setup>
-import { collection, doc, setDoc } from "firebase/firestore"
+import { collection, doc, setDoc, updateDoc } from "firebase/firestore"
 import { db } from '../firebaseConfig.js'
 import { onMounted, ref, watchEffect } from 'vue'
 import RadioButton from "primevue/radiobutton"
@@ -89,9 +89,6 @@ const genderData = [{key: 1, value: 'Male'}, {key: 2, value: 'Female'}, {key: 3,
 const ages = [{key: 1, value: 'Under 18'}, {key: 2, value: '18-25'}, {key: 3, value: '25-30'}, {key: 4, value: '30-35'}, 
     {key: 5, value: '40-50'}, {key: 6, value: '50-60'}, {key: 7, value: '60-70'}]
 const lensesOrGlasses = [{key: 1, value: true}, {key: 2, value: false}]
-// const visualImpairments = [{key: 1, value: 'Myopia', vModel: selectedMyopia}, {key: 2, value: 'Foresight', vModel: selectedForesight}, 
-//     {key: 3, value: 'Daltonism', vModel: selectedDaltonism}, {key: 4, value: 'Spatial blindness', vModel: selectedSpatialBlindness}, 
-//     {key: 5, value: 'No visual impairment', vModel: selectedNoVisualImpairment}]
 
 async function submitSurvey() {
     await setDoc(doc(measurementsRef, sessionId.value), {

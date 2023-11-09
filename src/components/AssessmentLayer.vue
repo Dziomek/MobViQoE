@@ -30,20 +30,29 @@
 </template>
 
 <script setup>
+import { collection, doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"
 import RadioButton from 'primevue/radiobutton'
 import Button from 'primevue/button'
 import { onMounted, ref } from 'vue'
+import { db } from '../firebaseConfig'
+import { useStore } from "../store"
+import { storeToRefs } from 'pinia'
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
 
+const store = useStore()
+const { sessionId } = storeToRefs(store)
+
+const measurementsRef = collection(db, "measurements")
+
 const emits = defineEmits(['nextVideo'])
 
 const props = defineProps({
-	videoId: {
-		type: Number,
+	video: {
+		type: Object,
 		required: true,
-		default: 0
+		default: {}
 	},
 	accMeasurements: {
 		type: Array,
@@ -57,7 +66,10 @@ const props = defineProps({
 	}
 })
 
-function submitAssessment() {
+async function submitAssessment() {
+	await updateDoc(doc(measurementsRef, sessionId.value), {
+        scores: arrayUnion({ videoId: props.video.index, score: assessment.value })
+    })
 	emits('nextVideo')
 }
 
@@ -76,6 +88,10 @@ function getAccAvg() {
 		z: recuded.z / dataLength
 	}
 }
+
+onMounted(() => {
+	console.log(props.video.index, 'hello')
+}) 
 
 </script>
 

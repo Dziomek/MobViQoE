@@ -1,8 +1,7 @@
 <template>
 	<div class="flex flex-col" style="background-color: black;">
-		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen"  :video="video" />
-		<AssessmentLayer v-if="videoEnded"  @nextVideo="nextVideo"
-			:videoId="1" :accMeasurements="accMeasurements" :gyroMeasurements="gyroMeasurements" :video="video" />
+		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
+		<AssessmentLayer v-if="videoEnded"  @nextVideo="nextVideo" :accMeasurements="accMeasurements" :gyroMeasurements="gyroMeasurements" :video="video" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
@@ -10,6 +9,7 @@
 			<source v-else-if="randomIndex == 2" src="../assets/videos/vid2.mp4">
 			<source v-else-if="randomIndex == 3" src="../assets/videos/vid3.mp4">
 			<source v-else-if="randomIndex == 4" src="../assets/videos/vid4.mp4">
+			<!-- <source :key="randomIndex" :src="dynamicSrc"> -->
 		</video>
 		<!-- <span style="color: white;">
 			{{ accMeasurements.length }} {{  gyroMeasurements.length }}
@@ -18,7 +18,7 @@
 </template>
  
 <script setup>
-import { onMounted, onUnmounted, ref, inject, watch } from 'vue'
+import { onMounted, onUnmounted, ref, inject, watch, computed } from 'vue'
 import { useRouter } from 'vue-router';
 import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
