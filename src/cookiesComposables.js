@@ -30,8 +30,6 @@ export function setCookieBeforeSession(index, excludedIndexes) {
 export function removeExistingCookies() { // starting new session
     Cookies.remove('history', { path: '' })
     Cookies.remove('sessionId', { path: '' })
-
-    sessionStorage.removeItem('sessionId')
 }
 
 export function getCookiesData() { // going back to existing session

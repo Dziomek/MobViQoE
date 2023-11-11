@@ -2,8 +2,9 @@ import { useStore } from "./store"
 import { storeToRefs } from "pinia"
 import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
+import { removeExistingCookies } from './cookiesComposables.js'
 
-export function checkSessionId() {
+export function syncSessionId() {
     const store = useStore()
     const { sessionId } = storeToRefs(store)
     const sessionIdCookie = Cookies.get('sessionId')
@@ -30,4 +31,23 @@ export function decideOnContinueLayerVisibility() {
         const { showContinueLayer } = storeToRefs(store)
         showContinueLayer.value = true
     }
+}
+
+export function syncSessionStorage() {
+    const sessionIdCookie = Cookies.get('sessionId')
+    const historyCookie = Cookies.get('history')
+    if(!sessionIdCookie) {
+        if(sessionStorage.getItem('sessionId')) sessionStorage.removeItem('sessionId')
+    }
+    if(!historyCookie) {
+        if(sessionStorage.getItem('history')) sessionStorage.removeItem('history')
+    }
+    sessionStorage.clear()
+}
+
+export function finishSurvey() {
+    const store = useStore()
+    store.clearStore()
+    sessionStorage.clear()
+    removeExistingCookies()
 }

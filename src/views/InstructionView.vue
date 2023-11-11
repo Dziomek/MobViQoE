@@ -7,18 +7,12 @@
 
 <script setup>
 import Button from 'primevue/button'
-import { onMounted } from 'vue';
-import { useRouter, useRoute } from 'vue-router'
+import { useRouter } from 'vue-router'
 
 const router = useRouter()
-const route = useRoute()
 
 function navigateToSurvey() {
     router.push({ name: 'survey' })
 }
-
-onMounted(() => {
-    console.log(route)
-})
 
 </script>

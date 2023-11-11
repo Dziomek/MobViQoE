@@ -2,8 +2,9 @@ import { createRouter, createWebHistory } from "vue-router"
 import StartView from "./views/StartView.vue"
 import SessionView from "./views/SessionView.vue"
 import PersonalSurvey from "./views/PersonalSurvey.vue"
-import Instruction from "./views/Instruction.vue"
-import { checkSessionId, decideOnContinueLayerVisibility } from './routeComposables.js'
+import InstructionView from "./views/InstructionView.vue"
+import FinishView from './views/FinishView.vue'
+import { syncSessionId, decideOnContinueLayerVisibility, syncSessionStorage, finishSurvey } from './routeComposables.js'
 import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesComposables.js"
 
 const routes = [
@@ -12,6 +13,7 @@ const routes = [
         name: 'start', 
         component: StartView,
         beforeEnter: (to, from, next) => {
+            syncSessionStorage()
             decideOnContinueLayerVisibility()
             sessionStorage.setItem('currentRoute', to.name)
             next()
@@ -20,7 +22,7 @@ const routes = [
     { 
         path: '/instruction', 
         name: 'instruction', 
-        component: Instruction,
+        component: InstructionView,
         beforeEnter: (to, from, next) => {
             const currentRoute = sessionStorage.getItem('currentRoute')
             if(!(currentRoute == 'start' || currentRoute == to.name)) {
@@ -28,7 +30,7 @@ const routes = [
                 return
             }
             sessionStorage.setItem('currentRoute', to.name)
-            checkSessionId()
+            syncSessionId()
             setCookieBeforeInstruction()
             next()
         },
@@ -38,15 +40,13 @@ const routes = [
         name: 'survey', 
         component: PersonalSurvey ,
         beforeEnter: (to, from, next) => {
-            console.log('enter survey')
             const currentRoute = sessionStorage.getItem('currentRoute')
             if(!(currentRoute == 'instruction' || currentRoute == to.name)) {
                 router.push({ name: 'start' })
-                next()
                 return
             }
             sessionStorage.setItem('currentRoute', to.name)
-            checkSessionId()
+            syncSessionId()
             setCookieBeforeSurvey()
             next()
         },
@@ -56,19 +56,31 @@ const routes = [
         name: 'session', 
         component: SessionView,  
         beforeEnter: (to, from, next) => {
-            console.log('enter session')
             const currentRoute = sessionStorage.getItem('currentRoute')
             if(!(currentRoute == 'survey' || currentRoute == to.name)) {
                 router.push({ name: 'start' })
-                next()
                 return
             }
             sessionStorage.setItem('currentRoute', to.name)
-            checkSessionId()
+            syncSessionId()
             setCookieBeforeSession()
             next()
         },
     },
+    {
+        path: '/finish',
+        name: 'finish',
+        component: FinishView,
+        beforeEnter: (to, from, next) => {
+            const currentRoute = sessionStorage.getItem('currentRoute')
+            if(!(currentRoute == 'session' || currentRoute == to.name)) {
+                router.push({ name: 'start' })
+                return
+            }
+            finishSurvey()
+            next()
+        }
+    }
 ]
 
 export const router = createRouter({

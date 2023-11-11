@@ -24,19 +24,20 @@
 			</div>
 			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
 		</div>
-		<Button :disabled="!assessment" @click="submitAssessment" label="Next video" outlined size="large" />
+		<Button :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
 		
 	</div>
 </template>
 
 <script setup>
-import { collection, doc, setDoc, updateDoc, arrayUnion } from "firebase/firestore"
+import { collection, doc, updateDoc, arrayUnion } from "firebase/firestore"
 import RadioButton from 'primevue/radiobutton'
 import Button from 'primevue/button'
 import { onMounted, ref } from 'vue'
 import { db } from '../firebaseConfig'
 import { useStore } from "../store"
 import { storeToRefs } from 'pinia'
+import { SURVEY_LENGTH } from '../videoConfig.js'
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
@@ -63,6 +64,11 @@ const props = defineProps({
 		type: Array,
 		required: true,
 		default: []
+	},
+	videosWatched :{
+		type: Number,
+		required: true,
+		default: 0
 	}
 })
 
@@ -88,11 +94,6 @@ function getAccAvg() {
 		z: recuded.z / dataLength
 	}
 }
-
-onMounted(() => {
-	console.log(props.video.index, 'hello')
-}) 
-
 </script>
 
 <style>

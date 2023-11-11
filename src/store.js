@@ -6,5 +6,11 @@ export const useStore = defineStore('store', () => {
     const sessionState = ref(null) // { videoIndex: Number, excludedIndexes: Array }
     const showContinueLayer = ref(null)
 
-    return { sessionId, sessionState, showContinueLayer }
+    function clearStore() {
+        sessionId.value = null
+        sessionState.value = null
+        showContinueLayer.value = null
+    }
+
+    return { sessionId, sessionState, showContinueLayer, clearStore }
 })

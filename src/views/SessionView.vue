@@ -2,7 +2,7 @@
 	<div class="flex flex-col" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :video="video" />
+			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length"/>
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
@@ -24,7 +24,7 @@ import { useRouter } from 'vue-router';
 import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
 import SensorsComponent from '../components/SensorsComponent.vue'
-import { videoConfig } from '../videoConfig.js'
+import { VIDEO_CONFIG, SURVEY_LENGTH } from '../videoConfig.js'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { setCookieBeforeSession } from '../cookiesComposables.js'
@@ -45,7 +45,7 @@ const videoElement = ref()
 const playToggled = ref(false)
 const videoEnded = ref(false)
 const randomIndex = ref(Math.floor(Math.random() * 5))
-const video = ref(videoConfig[randomIndex.value])
+const video = ref(VIDEO_CONFIG[randomIndex.value])
 const excludedIndexes = ref([randomIndex.value])
 
 function toggleAppFullScreen() {
@@ -129,12 +129,16 @@ onMounted(() => {
 })
 
 function nextVideo() {
+	if(excludedIndexes.value.length == SURVEY_LENGTH) {
+		router.push({ name: 'finish' })
+		return
+	}
 	const randomNumber = Math.floor(Math.random() * 5)
 	if (excludedIndexes.value.includes(randomNumber)) return nextVideo()
 	else {
 		randomIndex.value = randomNumber
 		excludedIndexes.value.push(randomNumber)
-		video.value = videoConfig[randomIndex.value]
+		video.value = VIDEO_CONFIG[randomIndex.value]
 		playToggled.value = false
 		videoEnded.value = false
 		///
@@ -156,7 +160,7 @@ function setSessionState() {
 		randomIndex.value = item.videoIndex
 		excludedIndexes.value = item.excludedIndexes
 		sessionState.value = item
-		video.value = videoConfig[randomIndex.value]
+		video.value = VIDEO_CONFIG[randomIndex.value]
 	} else {
 		updateSessionState()
 	}
