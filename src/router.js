@@ -7,6 +7,7 @@ import { useStore } from "./store"
 import { storeToRefs } from "pinia"
 import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
+import { checkSessionId } from './routeComposables.js'
 
 const routes = [
     {   
@@ -31,15 +32,7 @@ const routes = [
                 return
             }
             sessionStorage.setItem('currentRoute', to.name)
-            const store = useStore()
-            const { sessionId } = storeToRefs(store)
-            if(sessionStorage.getItem('sessionId')) {
-                sessionId.value = sessionStorage.getItem('sessionId')
-            } else {
-                sessionId.value = uuidv4()
-                sessionStorage.setItem('sessionId', sessionId.value)
-            }
-            console.log(sessionId.value)
+            checkSessionId()
             Cookies.set('history', JSON.stringify({ 'currentRoute': to.name }), { expires: 1 })
             // console.log(JSON.parse(Cookies.get('lastRoute')))
             next()
@@ -58,6 +51,7 @@ const routes = [
                 return
             }
             sessionStorage.setItem('currentRoute', to.name)
+            checkSessionId()
             Cookies.set('history', JSON.stringify({ 'currentRoute': to.name }), { expires: 1 })
             next()
         },
@@ -74,7 +68,8 @@ const routes = [
                 next()
                 return
             }
-            sessionStorage.setItem('currentRoute', to.name) 
+            sessionStorage.setItem('currentRoute', to.name)
+            checkSessionId()
             next()
         },
     },
