@@ -1,7 +1,8 @@
 <template>
 	<div class="flex flex-col" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
-		<AssessmentLayer v-if="videoEnded"  @nextVideo="nextVideo" :accMeasurements="accMeasurements" :gyroMeasurements="gyroMeasurements" :video="video" />
+		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
+			:gyroMeasurements="gyroMeasurements" :video="video" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
@@ -24,11 +25,19 @@ import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
 import SensorsComponent from '../components/SensorsComponent.vue'
 import { videoConfig } from '../videoConfig.js'
+import { useStore } from '../store'
+import { storeToRefs } from 'pinia'
+import { setCookieBeforeSession } from '../cookiesComposables.js'
 
 /// APP/ROUTER
 
 const appElement = inject('appElement') // from App.vue
 const router = useRouter() // router element
+
+// STORE
+
+const store = useStore()
+const { sessionState } = storeToRefs(store)
 
 /// VIDEO
 
@@ -78,7 +87,7 @@ const accMeasurements = ref([])
 const lightMeasurements = ref([])
 
 const lastAccMeasurement = ref({ x: 0, y: 0, z: 0 })
-const lastGyroMeasurement = ref({ alpha: 0, beta: 0, gamma: 0})
+const lastGyroMeasurement = ref({ alpha: 0, beta: 0, gamma: 0 })
 
 onMounted(() => {
 	function handleDeviceMotion(event) {
@@ -114,18 +123,39 @@ onMounted(() => {
 	}
 	window.addEventListener('devicemotion', handleDeviceMotion)
 	window.addEventListener('deviceorientation', handleDeviceOrientation)
+
+	if(sessionStorage.getItem('sessionState')) {
+		const item = JSON.parse(sessionStorage.getItem('sessionState'))
+		randomIndex.value = item.videoIndex
+		video.value = videoConfig[randomIndex.value]
+		excludedIndexes.value = item.excludedIndexes
+		sessionState.value = item
+	} else {
+		updateSessionState()
+	}
 })
 
 function nextVideo() {
 	const randomNumber = Math.floor(Math.random() * 5)
-	if(excludedIndexes.value.includes(randomNumber)) return nextVideo()
-	else { 
+	if (excludedIndexes.value.includes(randomNumber)) return nextVideo()
+	else {
 		randomIndex.value = randomNumber
 		excludedIndexes.value.push(randomNumber)
 		video.value = videoConfig[randomIndex.value]
 		playToggled.value = false
 		videoEnded.value = false
+		///
+		updateSessionState()
 	}
+}
+
+function updateSessionState() {
+	sessionState.value = {
+		videoIndex: randomIndex.value,
+		excludedIndexes: excludedIndexes.value
+	}
+	sessionStorage.setItem('sessionState', JSON.stringify(sessionState.value))
+	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
 }
 
 </script>

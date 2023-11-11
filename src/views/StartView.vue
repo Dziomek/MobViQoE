@@ -8,10 +8,17 @@
 <script setup>
 import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
+import { v4 as uuidv4 } from 'uuid'
+import { useStore } from '../store'
+import { storeToRefs } from 'pinia'
 
 const router = useRouter()
 
-function navigateToInstruction() {
+const store = useStore()
+const { sessionId } = storeToRefs(store)
+
+
+async function navigateToInstruction() {
     router.push({ name: 'instruction' })
 }
 
