@@ -31,12 +31,15 @@ function goBackToPreviousSession() {
     const data = getCookiesData()
     const currentRoute = data.history.currentRoute
     sessionId.value = data.sessionId
-    sessionState.value = {
-        videoIndex: data.history.videoIndex,
-        excludedIndexes: data.history.excludedIndexes
+    if(data.history.videoIndex && data.history.excludedIndexes) {
+        sessionState.value = {
+            videoIndex: data.history.videoIndex,
+            excludedIndexes: data.history.excludedIndexes
+        }
+        sessionStorage.setItem('sessionState', JSON.stringify(sessionState.value))
     }
     sessionStorage.setItem('currentRoute', currentRoute)
-    sessionStorage.setItem('sessionState', JSON.stringify(sessionState.value))
+    
     router.push({ name: currentRoute })
 }
 </script>

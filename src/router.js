@@ -3,11 +3,7 @@ import StartView from "./views/StartView.vue"
 import SessionView from "./views/SessionView.vue"
 import PersonalSurvey from "./views/PersonalSurvey.vue"
 import Instruction from "./views/Instruction.vue"
-import { useStore } from "./store"
-import { storeToRefs } from "pinia"
-import Cookies from "js-cookie"
-import { v4 as uuidv4 } from 'uuid'
-import { checkSessionId, decideContinueLayerVisibility } from './routeComposables.js'
+import { checkSessionId, decideOnContinueLayerVisibility } from './routeComposables.js'
 import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesComposables.js"
 
 const routes = [
@@ -16,8 +12,7 @@ const routes = [
         name: 'start', 
         component: StartView,
         beforeEnter: (to, from, next) => {
-            console.log('enter start')
-            decideContinueLayerVisibility()
+            decideOnContinueLayerVisibility()
             sessionStorage.setItem('currentRoute', to.name)
             next()
         },
@@ -27,7 +22,6 @@ const routes = [
         name: 'instruction', 
         component: Instruction,
         beforeEnter: (to, from, next) => {
-            console.log('enter instruction')
             const currentRoute = sessionStorage.getItem('currentRoute')
             if(!(currentRoute == 'start' || currentRoute == to.name)) {
                 router.push({ name: 'start' })

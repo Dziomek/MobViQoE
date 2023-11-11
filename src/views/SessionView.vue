@@ -19,7 +19,7 @@
 </template>
  
 <script setup>
-import { onMounted, onUnmounted, ref, inject, watch, computed } from 'vue'
+import { onMounted, ref, inject } from 'vue'
 import { useRouter } from 'vue-router';
 import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
@@ -70,69 +70,62 @@ function playVideo() {
 
 /// SENSORS
 
-const gyroData = ref({ // gyroscope
-	alpha: null,
-	beta: null,
-	gamma: null
-})
-const accData = ref({ // accelerometer
-	x: null,
-	y: null,
-	z: null
-})
-const lightData = ref() // light sensor
+// const gyroData = ref({ // gyroscope
+// 	alpha: null,
+// 	beta: null,
+// 	gamma: null
+// })
+// const accData = ref({ // accelerometer
+// 	x: null,
+// 	y: null,
+// 	z: null
+// })
+// const lightData = ref() // light sensor
 
 const gyroMeasurements = ref([])
 const accMeasurements = ref([])
 const lightMeasurements = ref([])
 
-const lastAccMeasurement = ref({ x: 0, y: 0, z: 0 })
-const lastGyroMeasurement = ref({ alpha: 0, beta: 0, gamma: 0 })
+// const lastAccMeasurement = ref({ x: 0, y: 0, z: 0 })
+// const lastGyroMeasurement = ref({ alpha: 0, beta: 0, gamma: 0 })
 
 onMounted(() => {
-	function handleDeviceMotion(event) {
-		const newMeasurement = {
-			x: event.acceleration.x,
-			y: event.acceleration.y,
-			z: event.acceleration.z,
-		}
-		if (
-			Math.abs(newMeasurement.x - lastAccMeasurement.value.x) >= 1 ||
-			Math.abs(newMeasurement.y - lastAccMeasurement.value.y) >= 1 ||
-			Math.abs(newMeasurement.z - lastAccMeasurement.value.z) >= 1
-		) {
-			accMeasurements.value.push(newMeasurement);
-			lastAccMeasurement.value = newMeasurement
-		}
-	}
-	function handleDeviceOrientation(event) {
-		const newMeasurement = {
-			alpha: event.alpha,
-			beta: event.beta,
-			gamma: event.gamma
-		}
-		if (
-			Math.abs(newMeasurement.alpha - lastAccMeasurement.value.alpha) >= 1 ||
-			Math.abs(newMeasurement.beta - lastAccMeasurement.value.beta) >= 1 ||
-			Math.abs(newMeasurement.gamma - lastAccMeasurement.value.gamma) >= 1
-		) {
-			gyroMeasurements.value.push(newMeasurement);
-			lastGyroMeasurement.value = newMeasurement
-		}
+	// function handleDeviceMotion(event) {
+	// 	const newMeasurement = {
+	// 		x: event.acceleration.x,
+	// 		y: event.acceleration.y,
+	// 		z: event.acceleration.z,
+	// 	}
+	// 	if (
+	// 		Math.abs(newMeasurement.x - lastAccMeasurement.value.x) >= 1 ||
+	// 		Math.abs(newMeasurement.y - lastAccMeasurement.value.y) >= 1 ||
+	// 		Math.abs(newMeasurement.z - lastAccMeasurement.value.z) >= 1
+	// 	) {
+	// 		accMeasurements.value.push(newMeasurement);
+	// 		lastAccMeasurement.value = newMeasurement
+	// 	}
+	// }
+	// function handleDeviceOrientation(event) {
+	// 	const newMeasurement = {
+	// 		alpha: event.alpha,
+	// 		beta: event.beta,
+	// 		gamma: event.gamma
+	// 	}
+	// 	if (
+	// 		Math.abs(newMeasurement.alpha - lastAccMeasurement.value.alpha) >= 1 ||
+	// 		Math.abs(newMeasurement.beta - lastAccMeasurement.value.beta) >= 1 ||
+	// 		Math.abs(newMeasurement.gamma - lastAccMeasurement.value.gamma) >= 1
+	// 	) {
+	// 		gyroMeasurements.value.push(newMeasurement);
+	// 		lastGyroMeasurement.value = newMeasurement
+	// 	}
 
-	}
-	window.addEventListener('devicemotion', handleDeviceMotion)
-	window.addEventListener('deviceorientation', handleDeviceOrientation)
+	// }
+	// window.addEventListener('devicemotion', handleDeviceMotion)
+	// window.addEventListener('deviceorientation', handleDeviceOrientation)
 
-	if(sessionStorage.getItem('sessionState')) {
-		const item = JSON.parse(sessionStorage.getItem('sessionState'))
-		randomIndex.value = item.videoIndex
-		video.value = videoConfig[randomIndex.value]
-		excludedIndexes.value = item.excludedIndexes
-		sessionState.value = item
-	} else {
-		updateSessionState()
-	}
+	setSessionState()
+	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
 })
 
 function nextVideo() {
@@ -155,7 +148,18 @@ function updateSessionState() {
 		excludedIndexes: excludedIndexes.value
 	}
 	sessionStorage.setItem('sessionState', JSON.stringify(sessionState.value))
-	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
+}
+
+function setSessionState() {
+	if(sessionStorage.getItem('sessionState')) {
+		const item = JSON.parse(sessionStorage.getItem('sessionState'))
+		randomIndex.value = item.videoIndex
+		excludedIndexes.value = item.excludedIndexes
+		sessionState.value = item
+		video.value = videoConfig[randomIndex.value]
+	} else {
+		updateSessionState()
+	}
 }
 
 </script>

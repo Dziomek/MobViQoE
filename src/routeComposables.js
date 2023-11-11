@@ -22,7 +22,7 @@ export function checkSessionId() {
     console.log(sessionId.value)
 }
 
-export function decideContinueLayerVisibility() {
+export function decideOnContinueLayerVisibility() {
     const cookie = Cookies.get('history')
     if(cookie) {
         // const parsedCookie = JSON.parse(cookie)
