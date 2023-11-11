@@ -7,7 +7,8 @@ import { useStore } from "./store"
 import { storeToRefs } from "pinia"
 import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
-import { checkSessionId } from './routeComposables.js'
+import { checkSessionId, decideContinueLayerVisibility } from './routeComposables.js'
+import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesComposables.js"
 
 const routes = [
     {   
@@ -16,6 +17,7 @@ const routes = [
         component: StartView,
         beforeEnter: (to, from, next) => {
             console.log('enter start')
+            decideContinueLayerVisibility()
             sessionStorage.setItem('currentRoute', to.name)
             next()
         },
@@ -33,8 +35,7 @@ const routes = [
             }
             sessionStorage.setItem('currentRoute', to.name)
             checkSessionId()
-            Cookies.set('history', JSON.stringify({ 'currentRoute': to.name }), { expires: 1 })
-            // console.log(JSON.parse(Cookies.get('lastRoute')))
+            setCookieBeforeInstruction()
             next()
         },
     },
@@ -52,7 +53,7 @@ const routes = [
             }
             sessionStorage.setItem('currentRoute', to.name)
             checkSessionId()
-            Cookies.set('history', JSON.stringify({ 'currentRoute': to.name }), { expires: 1 })
+            setCookieBeforeSurvey()
             next()
         },
     },
@@ -70,6 +71,7 @@ const routes = [
             }
             sessionStorage.setItem('currentRoute', to.name)
             checkSessionId()
+            setCookieBeforeSession()
             next()
         },
     },
