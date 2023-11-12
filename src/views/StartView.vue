@@ -4,6 +4,7 @@
         <h1>MobiViQoE</h1>
         <Button @click="navigateToInstruction" label="Get started" outlined/>
     </div>
+    <SensorsData />
 </template>
 
 <script setup>
@@ -12,6 +13,7 @@ import Button from 'primevue/button'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import ContinueLayer from '../components/ContinueLayer.vue'
+import SensorsData from '../views/SesnorsData.vue'
 
 const router = useRouter()
 

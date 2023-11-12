@@ -25,7 +25,7 @@
 			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
 		</div>
 		<Button :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
-		
+		{{ accMeasurements.length }} {{ gyroMeasurements.length }}
 	</div>
 </template>
 

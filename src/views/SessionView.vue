@@ -19,7 +19,7 @@
 </template>
  
 <script setup>
-import { onMounted, ref, inject } from 'vue'
+import { onMounted, ref, inject, watch } from 'vue'
 import { useRouter } from 'vue-router';
 import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
@@ -70,62 +70,74 @@ function playVideo() {
 
 /// SENSORS
 
-// const gyroData = ref({ // gyroscope
-// 	alpha: null,
-// 	beta: null,
-// 	gamma: null
-// })
-// const accData = ref({ // accelerometer
-// 	x: null,
-// 	y: null,
-// 	z: null
-// })
-// const lightData = ref() // light sensor
+const gyroData = ref({ // gyroscope
+	alpha: null,
+	beta: null,
+	gamma: null
+})
+const accData = ref({ // accelerometer
+	x: null,
+	y: null,
+	z: null
+})
+const lightData = ref() // light sensor
 
 const gyroMeasurements = ref([])
 const accMeasurements = ref([])
 const lightMeasurements = ref([])
 
-// const lastAccMeasurement = ref({ x: 0, y: 0, z: 0 })
-// const lastGyroMeasurement = ref({ alpha: 0, beta: 0, gamma: 0 })
+function handleDeviceOrientation(event) {
+			gyroData.value = {
+				alpha: event.alpha, // Obrót wokół osi Z (stopnie od północy)
+				beta: event.beta, // Pochylenie w przód/tył (stopnie)
+				gamma: event.gamma, // Przechylenie w lewo/prawo (stopnie)
+			}
+			gyroMeasurements.value.push(gyroData.value)
+		}
+
+let accInterval
+let accIntervalDelete
 
 onMounted(() => {
-	// function handleDeviceMotion(event) {
-	// 	const newMeasurement = {
-	// 		x: event.acceleration.x,
-	// 		y: event.acceleration.y,
-	// 		z: event.acceleration.z,
-	// 	}
-	// 	if (
-	// 		Math.abs(newMeasurement.x - lastAccMeasurement.value.x) >= 1 ||
-	// 		Math.abs(newMeasurement.y - lastAccMeasurement.value.y) >= 1 ||
-	// 		Math.abs(newMeasurement.z - lastAccMeasurement.value.z) >= 1
-	// 	) {
-	// 		accMeasurements.value.push(newMeasurement);
-	// 		lastAccMeasurement.value = newMeasurement
-	// 	}
-	// }
-	// function handleDeviceOrientation(event) {
-	// 	const newMeasurement = {
-	// 		alpha: event.alpha,
-	// 		beta: event.beta,
-	// 		gamma: event.gamma
-	// 	}
-	// 	if (
-	// 		Math.abs(newMeasurement.alpha - lastAccMeasurement.value.alpha) >= 1 ||
-	// 		Math.abs(newMeasurement.beta - lastAccMeasurement.value.beta) >= 1 ||
-	// 		Math.abs(newMeasurement.gamma - lastAccMeasurement.value.gamma) >= 1
-	// 	) {
-	// 		gyroMeasurements.value.push(newMeasurement);
-	// 		lastGyroMeasurement.value = newMeasurement
-	// 	}
+	if ('DeviceMotionEvent' in window) {
+		function handleDeviceMotion(event) {
+			accData.value = {
+				x: event.acceleration.x || 0,
+				y: event.acceleration.y || 0,
+				z: event.acceleration.z || 0,
+			};
+			accMeasurements.value.push(accData.value)
+		}
+		setInterval(() => {
+			window.addEventListener('devicemotion', handleDeviceMotion)
+		}, 3000); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
+		setInterval(() => {
+			window.removeEventListener('devicemotion', handleDeviceMotion)
+		}, 3050); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
+	} else {
+		console.error('DeviceMotionEvent is not supported in this browser');
+	}
 
-	// }
-	// window.addEventListener('devicemotion', handleDeviceMotion)
-	// window.addEventListener('deviceorientation', handleDeviceOrientation)
+	if ('DeviceOrientationEvent' in window) {
+		accInterval = setInterval(() => {
+			window.addEventListener('deviceorientation', handleDeviceOrientation)
+		}, 3000); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
+		accIntervalDelete = setInterval(() => {
+			window.removeEventListener('deviceorientation', handleDeviceOrientation)
+		}, 3050); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
+	}
 
 	setSessionState()
 	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
+})
+
+watch(() => videoEnded.value,
+() => {
+	if(videoEnded.value) {
+		window.removeEventListener('deviceorientation', handleDeviceOrientation)
+		clearInterval(accInterval)
+		clearInterval(accIntervalDelete)
+	}
 })
 
 function nextVideo() {
