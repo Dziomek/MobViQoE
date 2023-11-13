@@ -25,7 +25,7 @@
 			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
 		</div>
 		<Button :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
-		{{ accMeasurements.length }} {{ gyroMeasurements.length }}
+		{{ accMeasurements.length }} {{ gyroMeasurements.length }} {{ accAvg }} {{ gyroAvg }}
 	</div>
 </template>
 
@@ -41,6 +41,7 @@ import { SURVEY_LENGTH } from '../videoConfig.js'
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
+const gyroAvg = ref(getGyroAvg())
 
 const store = useStore()
 const { sessionId } = storeToRefs(store)
@@ -81,7 +82,7 @@ async function submitAssessment() {
 
 function getAccAvg() {
 	const dataLength = props.accMeasurements.length
-	const recuded = props.accMeasurements.reduce((acc, val) => {
+	const reduced = props.accMeasurements.reduce((acc, val) => {
 		acc.x += val.x
 		acc.y += val.y
 		acc.z += val.z
@@ -89,9 +90,25 @@ function getAccAvg() {
 	}, { x: 0, y: 0, z: 0 })
 	
 	return {
-		x: recuded.x / dataLength,
-		y: recuded.y / dataLength,
-		z: recuded.z / dataLength
+		x: reduced.x / dataLength,
+		y: reduced.y / dataLength,
+		z: reduced.z / dataLength
+	}
+}
+
+function getGyroAvg() {
+	const dataLength = props.gyroMeasurements.length
+	const reduced = props.gyroMeasurements.reduce((acc, val) => {
+		acc.alpha += val.alpha
+		acc.beta =+ val.beta
+		acc.gamma += val.gamma
+		return acc
+	}, { alpha: 0, beta: 0, gamma: 0 })
+
+	return {
+		alpha: reduced.alpha / dataLength,
+		beta: reduced.beta / dataLength,
+		gamma: reduced.gamma / dataLength
 	}
 }
 </script>

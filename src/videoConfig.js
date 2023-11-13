@@ -6,4 +6,4 @@ export const VIDEO_CONFIG = [
     { index: 4, title: 'vid4', src: './assets/videos/vid4.mp4'},
 ]
 
-export const SURVEY_LENGTH = 1
+export const SURVEY_LENGTH = 5

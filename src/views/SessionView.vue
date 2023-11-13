@@ -2,7 +2,7 @@
 	<div class="flex flex-col" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length"/>
+			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
@@ -87,61 +87,35 @@ const accMeasurements = ref([])
 const lightMeasurements = ref([])
 
 function handleDeviceOrientation(event) {
-			gyroData.value = {
-				alpha: event.alpha, // Obrót wokół osi Z (stopnie od północy)
-				beta: event.beta, // Pochylenie w przód/tył (stopnie)
-				gamma: event.gamma, // Przechylenie w lewo/prawo (stopnie)
-			}
-			gyroMeasurements.value.push(gyroData.value)
-		}
+	gyroData.value = {
+		alpha: event.alpha || 0, // Obrót wokół osi Z (stopnie od północy)
+		beta: event.beta || 0, // Pochylenie w przód/tył (stopnie)
+		gamma: event.gamma || 0, // Przechylenie w lewo/prawo (stopnie)
+	}
+	gyroMeasurements.value.push(gyroData.value)
+}
+
+function handleDeviceMotion(event) {
+	accData.value = {
+		x: event.acceleration.x || 0,
+		y: event.acceleration.y || 0,
+		z: event.acceleration.z || 0,
+	};
+	accMeasurements.value.push(accData.value)
+}
 
 let accInterval
 let accIntervalDelete
+let gyroInterval
+let gyroIntervalDelete
 
 onMounted(() => {
-	if ('DeviceMotionEvent' in window) {
-		function handleDeviceMotion(event) {
-			accData.value = {
-				x: event.acceleration.x || 0,
-				y: event.acceleration.y || 0,
-				z: event.acceleration.z || 0,
-			};
-			accMeasurements.value.push(accData.value)
-		}
-		setInterval(() => {
-			window.addEventListener('devicemotion', handleDeviceMotion)
-		}, 3000); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
-		setInterval(() => {
-			window.removeEventListener('devicemotion', handleDeviceMotion)
-		}, 3050); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
-	} else {
-		console.error('DeviceMotionEvent is not supported in this browser');
-	}
-
-	if ('DeviceOrientationEvent' in window) {
-		accInterval = setInterval(() => {
-			window.addEventListener('deviceorientation', handleDeviceOrientation)
-		}, 3000); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
-		accIntervalDelete = setInterval(() => {
-			window.removeEventListener('deviceorientation', handleDeviceOrientation)
-		}, 3050); // Ustaw interwał czasowy na 1000 milisekund (1 sekunda)
-	}
-
 	setSessionState()
 	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
 })
 
-watch(() => videoEnded.value,
-() => {
-	if(videoEnded.value) {
-		window.removeEventListener('deviceorientation', handleDeviceOrientation)
-		clearInterval(accInterval)
-		clearInterval(accIntervalDelete)
-	}
-})
-
 function nextVideo() {
-	if(excludedIndexes.value.length == SURVEY_LENGTH) {
+	if (excludedIndexes.value.length == SURVEY_LENGTH) {
 		router.push({ name: 'finish' })
 		return
 	}
@@ -154,6 +128,10 @@ function nextVideo() {
 		playToggled.value = false
 		videoEnded.value = false
 		///
+		gyroData.value = null
+		accData.value = null
+		accMeasurements.value = []
+		gyroMeasurements.value = []
 		updateSessionState()
 	}
 }
@@ -167,7 +145,7 @@ function updateSessionState() {
 }
 
 function setSessionState() {
-	if(sessionStorage.getItem('sessionState')) {
+	if (sessionStorage.getItem('sessionState')) {
 		const item = JSON.parse(sessionStorage.getItem('sessionState'))
 		randomIndex.value = item.videoIndex
 		excludedIndexes.value = item.excludedIndexes
@@ -177,6 +155,52 @@ function setSessionState() {
 		updateSessionState()
 	}
 }
+
+watch(
+	() => videoEnded.value,
+	() => {
+		if (videoEnded.value) {
+			console.log('STOPPING EVENTS')
+
+			window.removeEventListener('devicemotion', handleDeviceMotion)
+			clearInterval(accInterval)
+			clearInterval(accIntervalDelete)
+
+			window.removeEventListener('deviceorientation', handleDeviceOrientation)
+			clearInterval(gyroInterval)
+			clearInterval(gyroIntervalDelete)
+		}
+	}
+)
+
+watch(
+	() => playToggled.value,
+	() => {
+		if (playToggled.value) {
+			console.log('STARTING EVENTS')
+			if ('DeviceMotionEvent' in window) {
+				accInterval = setInterval(() => {
+					window.addEventListener('devicemotion', handleDeviceMotion)
+				}, 3000)
+				accIntervalDelete = setInterval(() => {
+					window.removeEventListener('devicemotion', handleDeviceMotion)
+				}, 3100)
+			} else {
+				console.error('DeviceMotionEvent is not supported in this browser');
+			}
+
+			if ('DeviceOrientationEvent' in window) {
+				gyroInterval = setInterval(() => {
+					window.addEventListener('deviceorientation', handleDeviceOrientation)
+				}, 3000)
+				gyroIntervalDelete = setInterval(() => {
+					window.removeEventListener('deviceorientation', handleDeviceOrientation)
+				}, 3100)
+			}
+		}
+
+	}
+)
 
 </script>
 
