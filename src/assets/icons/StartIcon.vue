@@ -8,12 +8,10 @@
 defineProps({
     size: {
         type: Number,
-        required: true,
         default: 100
     },
     fill: {
         type: String,
-        required: true,
         default: '#E6E6E6'
     }
 })
