@@ -5,6 +5,8 @@ import { createPinia } from 'pinia'
 import PrimeVue from 'primevue/config'
 import { router } from './router'
 import 'primevue/resources/themes/lara-light-teal/theme.css'
+import 'primeicons/primeicons.css'
+
 
 
 const pinia = createPinia()

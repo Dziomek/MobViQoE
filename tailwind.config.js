@@ -9,7 +9,8 @@ export default {
     extend: {},
     colors: {
       'layer-color': 'rgba(0, 0, 0, 0.9)',
-      'light': '#E6E6E6'
+      'light': '#E6E6E6',
+      'title': 'rgb(250, 235, 215)'
     }
   },
   plugins: [],

@@ -4,28 +4,32 @@
 		<div class="flex gap-20">
 			<div class="flex items-center gap-2">
         		<RadioButton v-model="assessment" name="excellent" value="Excellent" />
+				<ExcellentIcon size="40"/>
         		<label class="text-xl" for="excellent">Excellent</label>
     		</div>
     		<div class="flex items-center gap-2">
         		<RadioButton v-model="assessment" name="good" value="Good" />
+				<GoodIcon size="40"/>
         		<label class="text-xl" for="good">Good</label>
     		</div>
 			<div class="flex items-center gap-2">
 				<RadioButton v-model="assessment" name="fair" value="Fair" />
+				<FairIcon size="40"/>
 				<label class="text-xl" for="fair">Fair</label>
 			</div>
 			<div class="flex items-center gap-2">
 				<RadioButton v-model="assessment" name="poor" value="Poor" />
+				<PoorIcon size="40"/>
 				<label class="text-xl" for="poor">Poor</label>
 			</div>
 			<div class="flex items-center gap-2">
 				<RadioButton v-model="assessment" name="bad" value="Bad" />
+				<BadIcon size="40"/>
 				<label class="text-xl" for="bad">Bad</label>
 			</div>
 			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
 		</div>
 		<Button :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
-		{{ accMeasurements.length }} {{ gyroMeasurements.length }} {{ accAvg }} {{ gyroAvg }}
 	</div>
 </template>
 
@@ -38,6 +42,11 @@ import { db } from '../firebaseConfig'
 import { useStore } from "../store"
 import { storeToRefs } from 'pinia'
 import { SURVEY_LENGTH } from '../videoConfig.js'
+import ExcellentIcon from '../assets/icons/ExcellentIcon.vue'
+import GoodIcon from '../assets/icons/GoodIcon.vue'
+import FairIcon from '../assets/icons/FairIcon.vue'
+import PoorIcon from '../assets/icons/PoorIcon.vue'
+import BadIcon from '../assets/icons/BadIcon.vue'
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
@@ -75,7 +84,7 @@ const props = defineProps({
 
 async function submitAssessment() {
 	await updateDoc(doc(measurementsRef, sessionId.value), {
-        scores: arrayUnion({ videoId: props.video.index, score: assessment.value })
+        scores: arrayUnion({ videoId: props.video.index, score: assessment.value, accAvg: accAvg.value, gyroAvg: gyroAvg.value  })
     })
 	emits('nextVideo')
 }

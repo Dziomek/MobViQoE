@@ -4,7 +4,7 @@
         <h1>MobiViQoE</h1>
         <Button @click="navigateToInstruction" label="Get started" outlined/>
     </div>
-    <SensorsData />
+    <!-- <SensorsData /> -->
 </template>
 
 <script setup>

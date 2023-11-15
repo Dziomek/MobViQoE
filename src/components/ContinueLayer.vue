@@ -1,10 +1,14 @@
 <template>
     <div id="continue-layer" class="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center bg-layer-color text-light py-16 gap-16">
-        <h1>You have an unfinished session</h1>
+        <div class="flex flex-col items-center gap-8">
+            <h1 class="text-title">You have an unfinished session</h1>
+            <UnfinishedSessionIcon />
+        </div>
+        
         <h2>Do you want to go back to it, or start new session?</h2>
         <div class="flex items-center justify-center gap-6">
-            <Button @click="goBackToPreviousSession" label="Go back to previous session" outlined />
-            <Button @click="startNewSession" label="Start new session" outlined />
+            <Button @click="goBackToPreviousSession" icon="pi pi-refresh" label="Go back to previous session" outlined />
+            <Button @click="startNewSession" icon="pi pi-play" label="Start new session" outlined />
         </div>
     </div>
 </template>
@@ -15,6 +19,7 @@ import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
 import { removeExistingCookies, getCookiesData } from '../cookiesComposables.js'
 import { useRouter } from 'vue-router'
+import UnfinishedSessionIcon from '../assets/icons/UnfinishedSessionIcon.vue'
 
 const router = useRouter()
 
