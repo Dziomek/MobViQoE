@@ -2,13 +2,27 @@
     <div id="continue-layer" class="absolute top-0 left-0 min-w-full min-h-screen z-10 flex flex-col items-center 
     justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
         <div class="flex flex-col items-center gap-8">
-            <h1 class="text-title">You have an unfinished session</h1>
+            <h1 class="text-title">
+                {{ language == 'en' 
+				? 
+				'You have an unfinished session' 
+				: 
+				'Wykryto nieukończoną sesję'
+				}}
+            </h1>
             <UnfinishedSessionIcon />
         </div>
-        <h2>Do you want to go back to it, or start new session?</h2>
+        <h2>
+            {{ language == 'en' 
+				? 
+				'Do you want to go back to it, or start new session?' 
+				: 
+				'Chcesz powrócić do starej sesji, czy rozpocząć nową?'
+			}}
+        </h2>
         <div class="flex items-center justify-center gap-6">
-            <Button @click="goBackToPreviousSession" icon="pi pi-refresh" label="Go back to previous session" outlined />
-            <Button @click="startNewSession" icon="pi pi-play" label="Start new session" outlined />
+            <Button @click="goBackToPreviousSession" icon="pi pi-refresh" :label="language == 'en' ? 'Go back to previous session' : 'Wróć do poprzedniej sesji'" outlined />
+            <Button @click="startNewSession" icon="pi pi-play" :label="language == 'en' ? 'Start new session' : 'Rozpocznij nową sesję'" outlined />
         </div>
     </div>
 </template>
@@ -24,7 +38,7 @@ import UnfinishedSessionIcon from '../assets/icons/UnfinishedSessionIcon.vue'
 const router = useRouter()
 
 const store = useStore()
-const { sessionId, sessionState, showContinueLayer } = storeToRefs(store)
+const { sessionId, sessionState, showContinueLayer, language } = storeToRefs(store)
 
 function startNewSession() {
     removeExistingCookies()
