@@ -1,8 +1,9 @@
 <template>
     <div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
-	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
+	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto ">
 		<h1 class="text-title">How can you evaluate the video quality?</h1>
-		<div class="flex gap-20 flex-wrap">
+		<!-- <h1>{{ video.title }}</h1> -->
+		<!-- <div class="flex gap-20 flex-wrap">
 			<div class="flex items-center gap-2">
         		<RadioButton v-model="assessment" name="excellent" value="Excellent" />
 				<ExcellentIcon size="40"/>
@@ -28,9 +29,46 @@
 				<BadIcon size="40"/>
 				<label class="text-xl" for="bad">Bad</label>
 			</div>
-			<!-- {{ accAvg }} {{ accMeasurements.length }} {{ gyroMeasurements.length }} -->
+		</div> -->
+		<Rating v-model="assessment" :cancel="false"/>
+		<div class="flex gap-5 h-[1rem]">
+			<div v-if="assessment == 1" class="flex gap-5 items-center">
+				<h2 class="text-title">Your score: </h2>
+				<div class="flex gap-2 items-center">
+					<BadIcon :size="40"/>
+					<span class="text-xl">Bad</span>
+				</div>
+			</div>
+			<div v-if="assessment == 2" class="flex gap-5 items-center">
+				<h2 class="text-title">Your score: </h2>
+				<div class="flex gap-2 items-center">
+					<PoorIcon :size="40"/>
+					<span class="text-xl">Poor</span>
+				</div>
+			</div>
+			<div v-if="assessment == 3" class="flex gap-5 items-center">
+				<h2 class="text-title">Your score: </h2>
+				<div class="flex gap-2 items-center">
+					<FairIcon :size="40"/>
+					<span class="text-xl">Fair</span>
+				</div>
+			</div>
+			<div v-if="assessment == 4" class="flex gap-5 items-center">
+				<h2 class="text-title">Your score: </h2>
+				<div class="flex gap-2 items-center">
+					<GoodIcon :size="40"/>
+					<span class="text-xl">Good</span>
+				</div>
+			</div>
+			<div v-if="assessment == 5" class="flex gap-5 items-center">
+				<h2 class="text-title">Your score: </h2>
+				<div class="flex gap-2 items-center">
+					<ExcellentIcon :size="40"/>
+					<span class="text-xl">Excellent</span>
+				</div>
+			</div>
 		</div>
-		<Button :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
+		<Button icon="pi pi-play" :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
 	</div>
 </template>
 
@@ -48,6 +86,8 @@ import GoodIcon from '../assets/icons/GoodIcon.vue'
 import FairIcon from '../assets/icons/FairIcon.vue'
 import PoorIcon from '../assets/icons/PoorIcon.vue'
 import BadIcon from '../assets/icons/BadIcon.vue'
+import Rating from 'primevue/rating'
+import CameraIcon from "../assets/icons/CameraIcon.vue"
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
@@ -124,7 +164,7 @@ function getGyroAvg() {
 </script>
 
 <style>
-#assessment-layer .p-radiobutton .p-radiobutton-box {
+/* #assessment-layer .p-radiobutton .p-radiobutton-box {
 	width: 3rem !important;
 	height: 3rem !important;
 }
@@ -137,5 +177,16 @@ function getGyroAvg() {
 #assessment-layer .p-radiobutton {
 	width: 3rem !important;
 	height: 3rem !important;
+}  */
+.p-rating {
+	gap: 4rem !important;
+}
+.p-rating .p-rating-item .p-rating-icon.p-icon {
+	width: 5rem !important;
+	height: 5rem !important;
+}
+.p-rating .p-rating-item.p-focus {
+	box-shadow: none !important;
+	border: none !important
 }
 </style>
