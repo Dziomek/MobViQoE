@@ -1,6 +1,6 @@
 <template>
-    <div id="instruction" class="flex flex-col w-full h-full justify-center items-center px-8 py-16 gap-16">
-        <h1>Instruction</h1>
+    <div id="instruction" class="flex flex-col w-full h-full justify-center items-center px-8 py-16 gap-16 bg-layer-color">
+        <h1 class="text-light">Instruction</h1>
         <Button @click="navigateToSurvey" label="Navigate to survey" outlined/>
     </div>
 </template>

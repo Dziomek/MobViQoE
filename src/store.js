@@ -5,6 +5,11 @@ export const useStore = defineStore('store', () => {
     const sessionId = ref(null)
     const sessionState = ref(null) // { videoIndex: Number, excludedIndexes: Array }
     const showContinueLayer = ref(null)
+    const language = ref('en')
+
+    function selectLanguage(lang) {
+        language.value = lang
+    }
 
     function clearStore() {
         sessionId.value = null
@@ -12,5 +17,5 @@ export const useStore = defineStore('store', () => {
         showContinueLayer.value = null
     }
 
-    return { sessionId, sessionState, showContinueLayer, clearStore }
+    return { sessionId, sessionState, showContinueLayer, language, clearStore, selectLanguage }
 })
