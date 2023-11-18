@@ -1,4 +1,5 @@
 <template>
+	<MenuComponent />
     <div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
 	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto ">
 		<h1 class="text-title">How can you evaluate the video quality?</h1>
@@ -88,6 +89,7 @@ import PoorIcon from '../assets/icons/PoorIcon.vue'
 import BadIcon from '../assets/icons/BadIcon.vue'
 import Rating from 'primevue/rating'
 import CameraIcon from "../assets/icons/CameraIcon.vue"
+import MenuComponent from "./MenuComponent.vue"
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())

@@ -1,4 +1,5 @@
 <template>
+	<MenuComponent />
     <div class="absolute top-0 left-0 w-full min-h-full max-h-screen z-10 flex flex-col justify-center items-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
 		<h1 class="text-title"> {{ video.title }}</h1>
 		<div class="flex flex-col items-center gap-8">
@@ -27,6 +28,7 @@
 <script setup>
 import FullscreenIcon from '../assets/icons/FullscreenIcon.vue'
 import StartIcon from '../assets/icons/StartIcon.vue'
+import MenuComponent from './MenuComponent.vue';
 
 defineEmits(['play', 'toggleFullScreen'])
 defineProps({

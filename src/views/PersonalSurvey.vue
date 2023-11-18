@@ -1,4 +1,5 @@
 <template>
+    <MenuComponent />
     <div id="personal-survey"
         class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center w-2/3 text-light">
@@ -154,6 +155,7 @@ import MaleIcon from '../assets/icons/MaleIcon.vue'
 import FemaleIcon from '../assets/icons/FemaleIcon.vue'
 import EyeglassesIcon from '../assets/icons/EyeglassesIcon.vue'
 import EyeIcon from '../assets/icons/EyeIcon.vue'
+import MenuComponent from "../components/MenuComponent.vue"
 
 const store = useStore()
 const { sessionId, language } = storeToRefs(store)
@@ -180,6 +182,7 @@ async function submitSurvey() {
         user: {
             gender: selectedGender.value,
             age: selectedAge.value,
+            lensesOrGlasses: selectedLensesOrGlasses.value,
             visualImpairments: {
                 lensesOrGlasses: selectedLensesOrGlasses.value,
                 myopia: selectedMyopia.value,
