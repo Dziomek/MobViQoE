@@ -3,7 +3,7 @@
     <div id="instruction" class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center w-full">
             <div class="flex flex-col items-center gap-8">
-                <h1 class="text-title">Information</h1>
+                <h1 class="text-title">{{ language == 'en' ? 'Information' : 'Informacja' }}</h1>
                 <InformationIcon />
             </div>
             <div id="information" class="flex flex-col flex-wrap gap-8 text-light justify-start w-2/3">
@@ -60,8 +60,13 @@ import GoodIcon from '../assets/icons/GoodIcon.vue';
 import CameraIcon from '../assets/icons/CameraIcon.vue';
 import StarIcon from '../assets/icons/StarIcon.vue'
 import { SURVEY_LENGTH } from '../videoConfig';
+import { useStore } from '../store';
+import { storeToRefs } from 'pinia';
 
 const router = useRouter()
+
+const store = useStore()
+const { language } = storeToRefs(store)
 
 function navigateToSurvey() {
     router.push({ name: 'survey' })
