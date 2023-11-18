@@ -7,8 +7,12 @@
                 <h1 class="text-title">MobiViQoE</h1>
                 <CameraIcon />
             </div>
-            <h2 class="text-light">Application to performing video quality assessment</h2>
-            <Button @click="navigateToInstruction" label="Get started" outlined />
+            <h2 class="text-light">{{ language == 'en' 
+            ? 
+            'Application for performing video quality assessment' 
+            : 
+            'Aplikacja do przeprowadzania badań jakości wideo' }}</h2>
+            <Button @click="navigateToInstruction" :label="language == 'en' ? 'Get started' : 'Rozpocznij'" outlined />
          </div>
     </div>
 </template>
@@ -25,7 +29,7 @@ import MenuComponent from '../components/MenuComponent.vue'
 const router = useRouter()
 
 const store = useStore()
-const { showContinueLayer } = storeToRefs(store)
+const { showContinueLayer, language } = storeToRefs(store)
 
 function navigateToInstruction() {
     router.push({ name: 'instruction' })
