@@ -5,12 +5,12 @@
 @layer base {
     h1 {
         @apply 
-        text-6xl
+        text-xl lg:text-6xl md:text-2xl
         font-serif
     }
     h2 {
         @apply
-        text-2xl
+        text-lg lg:text-2xl md:text-xl
         font-serif
         font-light
     }
@@ -24,4 +24,5 @@
 #app {
     min-height: 100vh;
     overflow: auto;
+    position: relative;
 }

@@ -1,7 +1,8 @@
 <template>
-    <div id="assessment-layer" class="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center bg-layer-color text-light py-16 gap-16">
-		<h1>How can you evaluate the video quality?</h1>
-		<div class="flex gap-20">
+    <div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
+	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
+		<h1 class="text-title">How can you evaluate the video quality?</h1>
+		<div class="flex gap-20 flex-wrap">
 			<div class="flex items-center gap-2">
         		<RadioButton v-model="assessment" name="excellent" value="Excellent" />
 				<ExcellentIcon size="40"/>

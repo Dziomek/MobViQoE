@@ -1,5 +1,5 @@
 <template>
-	<div class="flex flex-col" style="background-color: black;">
+	<div class="fixed top-0 left-0 flex flex-col w-full h-full overflow-auto" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
 			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length" />

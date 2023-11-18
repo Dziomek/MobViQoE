@@ -1,11 +1,11 @@
 <template>
-    <div id="personal-survey" class="flex flex-col w-full h-full justify-center items-center py-16 gap-16">
+    <div id="personal-survey" class="flex flex-col w-full min-h-full justify-center items-center px-8 py-16 gap-16 overflow-auto">
         <div class="flex justify-center">
             <h1>Personal survey</h1>
         </div>
         <div class="flex flex-col gap-8 items-center">
             <h2>Select gender</h2>
-            <div class="flex gap-16">
+            <div class="flex items-center gap-16 flex-wrap">
                 <div v-for="data in genderData" :key="data.key" class="flex gap-2">
                     <RadioButton v-model="selectedGender" :inputId="`${data.key}`" name="dynamic" :value="data.value" />
                     <label :for="`${data.key}`">{{ data.value }}</label>
@@ -14,7 +14,7 @@
         </div>
         <div class="flex flex-col gap-8 items-center">
             <h2>Select age</h2>
-            <div class="flex gap-16">
+            <div class="flex items-center gap-16 flex-wrap">
                 <div v-for="data in ages" :key="data.key" class="flex gap-2">
                     <RadioButton v-model="selectedAge" :inputId="`${data.key}`" name="dynamic" :value="data.value" />
                     <label :for="`${data.key}`">{{ data.value }}</label>
@@ -23,7 +23,7 @@
         </div>
         <div class="flex flex-col gap-8 items-center">
             <h2>Do you have lenses or glasses?</h2>
-            <div class="flex gap-16">
+            <div class="flex items-center gap-16 flex-wrap">
                 <div v-for="data in lensesOrGlasses" :key="data.key" class="flex gap-2">
                     <RadioButton v-model="selectedLensesOrGlasses" :inputId="`${data.key}`" name="dynamic" :value="data.value" />
                     <label :for="`${data.key}`">{{ data.value ? 'Yes' : 'No' }}</label>
@@ -32,7 +32,7 @@
         </div>
         <div class="flex flex-col gap-8 items-center">
             <h2>Select visual impairments (if any)</h2>
-            <div class="flex gap-16">
+            <div class="flex items-center gap-16 flex-wrap">
                 <div :key="1" class="flex gap-2">
                     <RadioButton v-model="selectedMyopia" @change="impairmetsInputChange" inputId="1" name="dynamic" :value="true" />
                     <label for="1">Myopia</label>

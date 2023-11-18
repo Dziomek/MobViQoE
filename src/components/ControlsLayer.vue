@@ -1,5 +1,5 @@
 <template>
-    <div class="absolute top-0 left-0 w-full h-full z-10 flex flex-col items-center justify-center bg-layer-color text-light py-16 gap-16 text-center">
+    <div class="absolute top-0 left-0 w-full min-h-full max-h-screen z-10 flex flex-col justify-center items-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
 		<h1 class="text-title"> {{ video.title }}</h1>
 		<div class="flex flex-col items-center gap-8">
 			<div class="flex flex-col gap-1">
@@ -11,7 +11,6 @@
 					on your phone)
 				</h3>
 			</div>
-			
 			<button>
 				<FullscreenIcon @click="$emit('toggleFullScreen')"></FullscreenIcon>
 			</button>
