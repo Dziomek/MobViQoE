@@ -7,13 +7,19 @@
             <div class="flex flex-col gap-10">
                 <h2>{{ language == 'en' ? 'Select language' : 'Wybierz język' }}</h2>
                 <Divider />
-                <div @click="store.selectLanguage('pl')" class="flex gap-2 items-center cursor-pointer">
-                    <img src="../assets/poland.png">
-                    <span>{{ language == 'en' ? 'Polish' : 'polski' }}</span>
+                <div @click="store.selectLanguage('pl')" class="flex gap-4 items-center cursor-pointer">
+                    <div class="flex items-center gap-2">
+                        <img src="../assets/poland.png">
+                        <span>{{ language == 'en' ? 'Polish' : 'polski' }}</span>
+                    </div>
+                    <Tag v-if="language == 'pl'" value="wybrany" />
                 </div>
-                <div @click="store.selectLanguage('en')" class="flex gap-2 items-center cursor-pointer">
-                    <img src="../assets/united-states-of-america.png">
-                    <span>{{ language == 'en' ? 'English' : 'angielski' }}</span>
+                <div @click="store.selectLanguage('en')" class="flex gap-4 items-center cursor-pointer">
+                    <div class="flex items-center gap-2">
+                        <img src="../assets/united-states-of-america.png">
+                        <span>{{ language == 'en' ? 'English' : 'angielski' }}</span> 
+                    </div>
+                    <Tag v-if="language == 'en'" value="selected" />
                 </div>
                 <Divider />
             </div>
@@ -31,6 +37,7 @@ import Sidebar from 'primevue/sidebar'
 import Divider from 'primevue/divider'
 import { useStore } from '../store.js'
 import { storeToRefs } from 'pinia'
+import Tag from 'primevue/tag'
 
 const visible = ref(false)
 

@@ -10,7 +10,12 @@
             <div class="flex flex-col w-full break-normal gap-8">
                 <div class="flex items-center gap-2">
                     <AgeIcon />
-                    <h2 class="text-title">Select your age</h2>
+                    <h2 class="text-title">
+                        {{ language == 'en'
+                            ? 'How old are you?'
+                            : 'Ile masz lat?'
+                        }}
+                    </h2>
                 </div>
                 <div class="flex items-center gap-16 w-full flex-wrap">
                     <div v-for="data in ages" :key="data.key" class="flex gap-2">
@@ -25,7 +30,11 @@
                         <FemaleIcon />
                         <MaleIcon />
                     </div>
-                    <h2 class="text-title">Select your gender</h2>
+                    <h2 class="text-title">
+                        {{ language == 'en'
+                            ? 'Select gender'
+                            : 'Wybierz płeć'
+                        }}</h2>
                 </div>
                 <div class="flex items-center gap-16 w-full flex-wrap">
                     <div v-for="data in genderData" :key="data.key" class="flex gap-2">
@@ -37,50 +46,86 @@
             <div class="flex flex-col w-full break-normal gap-8">
                 <div class="flex items-center gap-2">
                     <EyeglassesIcon />
-                    <h2 class="text-title">Do you have lenses or glasses?</h2>
+                    <h2 class="text-title">
+                        {{ language == 'en'
+                            ? 'Do you have lenses or glasses?'
+                            : 'Czy nosisz okulary lub soczewki kontaktowe?'
+                        }}
+                    </h2>
                 </div>
                 <div class="flex items-center gap-16 w-full flex-wrap">
                     <div v-for="data in lensesOrGlasses" :key="data.key" class="flex gap-2">
                         <RadioButton v-model="selectedLensesOrGlasses" :inputId="`${data.key}`" name="dynamic"
                             :value="data.value" />
-                        <label :for="`${data.key}`">{{ data.value ? 'Yes' : 'No' }}</label>
+                        <label :for="`${data.key}`">{{ data.value ? language == 'en' ? 'Yes' : 'Tak' : language == 'en' ?
+                            'No' : 'Nie' }}</label>
                     </div>
                 </div>
             </div>
             <div class="flex flex-col w-full break-normal gap-8">
                 <div class="flex items-center gap-2">
                     <EyeIcon />
-                    <h2 class="text-title">Select visual impairments (if any)</h2>
+                    <h2 class="text-title">
+                        {{ language == 'en'
+                            ? 'Select visual impairments (if any)'
+                            : 'Zaznacz wady wzroku, jeśli jakieś posiadasz'
+                        }}
+                    </h2>
                 </div>
                 <div class="flex items-center gap-16 w-full flex-wrap">
                     <div :key="1" class="flex gap-2">
                         <RadioButton v-model="selectedMyopia" @change="impairmetsInputChange" inputId="1" name="dynamic"
                             :value="true" />
-                        <label for="1">Myopia</label>
+                        <label for="1">
+                            {{ language == 'en'
+                                ? 'Myopia'
+                                : 'Krótkowzroczność'
+                            }}
+                        </label>
                     </div>
                     <div :key="2" class="flex gap-2">
                         <RadioButton v-model="selectedForesight" @change="impairmetsInputChange" inputId="2" name="dynamic"
                             :value="true" />
-                        <label for="2">Foresight</label>
+                        <label for="2">
+                            {{ language == 'en'
+                                ? 'Foresight'
+                                : 'Dalekowzroczność'
+                            }}
+                        </label>
                     </div>
                     <div :key="3" class="flex gap-2">
                         <RadioButton v-model="selectedDaltonism" @change="impairmetsInputChange" inputId="3" name="dynamic"
                             :value="true" />
-                        <label for="3">Daltonism</label>
+                        <label for="3">
+                            {{ language == 'en'
+                                ? 'Daltonism'
+                                : 'Daltonizm'
+                            }}
+                        </label>
                     </div>
                     <div :key="4" class="flex gap-2">
                         <RadioButton v-model="selectedSpatialBlindness" @change="impairmetsInputChange" inputId="4"
                             name="dynamic" :value="true" />
-                        <label for="4">Spatial blindness</label>
+                        <label for="4">
+                            {{ language == 'en'
+                                ? 'Spatial blindness'
+                                : 'Ślepota przestrzenna'
+                            }}
+                        </label>
                     </div>
                     <div :key="5" class="flex gap-2">
                         <RadioButton v-model="selectedNoVisualImpairment" @change="noImpairmentInputChange" inputId="5"
                             name="dynamic" :value="true" />
-                        <label for="5">No visual impairment</label>
+                        <label for="5">
+                            {{ language == 'en'
+                                ? 'No visual impairment'
+                                : 'Brak wad wzroku'
+                            }}
+                        </label>
                     </div>
                 </div>
             </div>
-            <Button @click="submitSurvey" label="Submit" outlined :disabled="!checkSelected()" />
+            <Button @click="submitSurvey" :label="language == 'en' ? 'Submit' : 'Kontynuuj'" outlined :disabled="!checkSelected()" />
         </div>
         <!-- <div class="flex justify-center">
             <h1 class="text-title">Personal survey</h1>
@@ -172,8 +217,9 @@ const selectedDaltonism = ref(false)
 const selectedSpatialBlindness = ref(false)
 const selectedNoVisualImpairment = ref(false)
 
-const genderData = [{ key: 1, value: 'Male' }, { key: 2, value: 'Female' }, { key: 3, value: 'Do not want to give' }]
-const ages = [{ key: 1, value: 'Under 18' }, { key: 2, value: '18-25' }, { key: 3, value: '25-30' }, { key: 4, value: '30-35' },
+const genderData = [{ key: 1, value: language == 'en ' ? 'Male' : 'Mężczyzna' }, { key: 2, value: language == 'en ' ? 'Female' : 'Kobieta' },
+{ key: 3, value: language == 'en ' ? 'Do not want to give' : 'Nie chcę podawać' }]
+const ages = [{ key: 1, value: language == 'en ' ? 'Under 18' : 'Poniżej 18' }, { key: 2, value: '18-25' }, { key: 3, value: '25-30' }, { key: 4, value: '30-35' },
 { key: 5, value: '40-50' }, { key: 6, value: '50-60' }, { key: 7, value: '60-70' }]
 const lensesOrGlasses = [{ key: 1, value: true }, { key: 2, value: false }]
 
@@ -224,4 +270,5 @@ function noImpairmentInputChange() {
     0% {
         opacity: 0;
     }
-}</style>
+}
+</style>
