@@ -217,9 +217,9 @@ const selectedDaltonism = ref(false)
 const selectedSpatialBlindness = ref(false)
 const selectedNoVisualImpairment = ref(false)
 
-const genderData = [{ key: 1, value: language == 'en ' ? 'Male' : 'Mężczyzna' }, { key: 2, value: language == 'en ' ? 'Female' : 'Kobieta' },
-{ key: 3, value: language == 'en ' ? 'Do not want to give' : 'Nie chcę podawać' }]
-const ages = [{ key: 1, value: language == 'en ' ? 'Under 18' : 'Poniżej 18' }, { key: 2, value: '18-25' }, { key: 3, value: '25-30' }, { key: 4, value: '30-35' },
+const genderData = [{ key: 1, value: language == 'en' ? 'Male' : 'Mężczyzna' }, { key: 2, value: language == 'en' ? 'Female' : 'Kobieta' },
+{ key: 3, value: language == 'en' ? 'Do not want to give' : 'Nie chcę podawać' }]
+const ages = [{ key: 1, value: language == 'en' ? 'Under 18' : 'Poniżej 18' }, { key: 2, value: '18-25' }, { key: 3, value: '25-30' }, { key: 4, value: '30-35' },
 { key: 5, value: '40-50' }, { key: 6, value: '50-60' }, { key: 7, value: '60-70' }]
 const lensesOrGlasses = [{ key: 1, value: true }, { key: 2, value: false }]
 

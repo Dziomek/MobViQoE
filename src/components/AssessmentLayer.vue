@@ -1,8 +1,13 @@
 <template>
 	<MenuComponent />
-    <div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
+	<div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
 	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto ">
-		<h1 class="text-title">How can you evaluate the video quality?</h1>
+		<h1 class="text-title">
+			{{ language == 'en'
+				? 'How can you evaluate the video quality?'
+				: 'Jak oceniasz jakość tego wideo?'
+			}}
+		</h1>
 		<!-- <h1>{{ video.title }}</h1> -->
 		<!-- <div class="flex gap-20 flex-wrap">
 			<div class="flex items-center gap-2">
@@ -31,45 +36,96 @@
 				<label class="text-xl" for="bad">Bad</label>
 			</div>
 		</div> -->
-		<Rating v-model="assessment" :cancel="false"/>
+		<Rating v-model="assessment" :cancel="false" />
 		<div class="flex gap-5 h-[1rem]">
 			<div v-if="assessment == 1" class="flex gap-5 items-center">
-				<h2 class="text-title">Your score: </h2>
+				<h2 class="text-title">
+					{{ language == 'en'
+						? 'Your score:'
+						: 'Twoja ocena:'
+					}} 
+				</h2>
 				<div class="flex gap-2 items-center">
-					<BadIcon :size="40"/>
-					<span class="text-xl">Bad</span>
+					<BadIcon :size="40" />
+					<span class="text-xl">
+						{{ language == 'en'
+							? 'Bad'
+							: 'Źle'
+						}}
+					</span>
 				</div>
 			</div>
 			<div v-if="assessment == 2" class="flex gap-5 items-center">
-				<h2 class="text-title">Your score: </h2>
+				<h2 class="text-title">
+					{{ language == 'en'
+						? 'Your score:'
+						: 'Twoja ocena:'
+					}} 
+				</h2>
 				<div class="flex gap-2 items-center">
-					<PoorIcon :size="40"/>
-					<span class="text-xl">Poor</span>
+					<PoorIcon :size="40" />
+					<span class="text-xl">
+						{{ language == 'en'
+							? 'Poor'
+							: 'Słabo'
+						}}
+					</span>
 				</div>
 			</div>
 			<div v-if="assessment == 3" class="flex gap-5 items-center">
-				<h2 class="text-title">Your score: </h2>
+				<h2 class="text-title">
+					{{ language == 'en'
+						? 'Your score:'
+						: 'Twoja ocena:'
+					}} 
+				</h2>
 				<div class="flex gap-2 items-center">
-					<FairIcon :size="40"/>
-					<span class="text-xl">Fair</span>
+					<FairIcon :size="40" />
+					<span class="text-xl">
+						{{ language == 'en'
+							? 'Fair'
+							: 'Średnio'
+						}}
+					</span>
 				</div>
 			</div>
 			<div v-if="assessment == 4" class="flex gap-5 items-center">
-				<h2 class="text-title">Your score: </h2>
+				<h2 class="text-title">
+					{{ language == 'en'
+						? 'Your score:'
+						: 'Twoja ocena:'
+					}}  
+				</h2>
 				<div class="flex gap-2 items-center">
-					<GoodIcon :size="40"/>
-					<span class="text-xl">Good</span>
+					<GoodIcon :size="40" />
+					<span class="text-xl">
+						{{ language == 'en'
+							? 'Good'
+							: 'Dobrze'
+						}}
+					</span>
 				</div>
 			</div>
 			<div v-if="assessment == 5" class="flex gap-5 items-center">
-				<h2 class="text-title">Your score: </h2>
+				<h2 class="text-title">
+					{{ language == 'en'
+						? 'Your score:'
+						: 'Twoja ocena:'
+					}} 
+				</h2>
 				<div class="flex gap-2 items-center">
-					<ExcellentIcon :size="40"/>
-					<span class="text-xl">Excellent</span>
+					<ExcellentIcon :size="40" />
+					<span class="text-xl">
+						{{ language == 'en'
+							? 'Excellent'
+							: 'Znakomicie'
+						}}
+					</span>
 				</div>
 			</div>
 		</div>
-		<Button icon="pi pi-play" :disabled="!assessment" @click="submitAssessment" :label="videosWatched != SURVEY_LENGTH ? 'Next video' : 'Finish'" outlined size="large" />
+		<Button :icon="videosWatched != SURVEY_LENGTH ? 'pi pi-play' : 'pi pi-check'" :disabled="!assessment" @click="submitAssessment"
+			:label="videosWatched != SURVEY_LENGTH ? language == 'en' ? 'Next video' : 'Nastepne wideo' : language == 'en' ? 'Finish' : 'Zakończ'" outlined size="large" />
 	</div>
 </template>
 
@@ -96,7 +152,7 @@ const accAvg = ref(getAccAvg())
 const gyroAvg = ref(getGyroAvg())
 
 const store = useStore()
-const { sessionId } = storeToRefs(store)
+const { sessionId, language } = storeToRefs(store)
 
 const measurementsRef = collection(db, "measurements")
 
@@ -118,7 +174,7 @@ const props = defineProps({
 		required: true,
 		default: []
 	},
-	videosWatched :{
+	videosWatched: {
 		type: Number,
 		required: true,
 		default: 0
@@ -127,8 +183,8 @@ const props = defineProps({
 
 async function submitAssessment() {
 	await updateDoc(doc(measurementsRef, sessionId.value), {
-        scores: arrayUnion({ videoId: props.video.index, score: assessment.value, accAvg: accAvg.value, gyroAvg: gyroAvg.value  })
-    })
+		scores: arrayUnion({ videoId: props.video.index, score: assessment.value, accAvg: accAvg.value, gyroAvg: gyroAvg.value })
+	})
 	emits('nextVideo')
 }
 
@@ -140,7 +196,7 @@ function getAccAvg() {
 		acc.z += val.z
 		return acc
 	}, { x: 0, y: 0, z: 0 })
-	
+
 	return {
 		x: reduced.x / dataLength,
 		y: reduced.y / dataLength,
@@ -152,7 +208,7 @@ function getGyroAvg() {
 	const dataLength = props.gyroMeasurements.length
 	const reduced = props.gyroMeasurements.reduce((acc, val) => {
 		acc.alpha += val.alpha
-		acc.beta =+ val.beta
+		acc.beta = + val.beta
 		acc.gamma += val.gamma
 		return acc
 	}, { alpha: 0, beta: 0, gamma: 0 })
@@ -183,12 +239,13 @@ function getGyroAvg() {
 .p-rating {
 	gap: 4rem !important;
 }
+
 .p-rating .p-rating-item .p-rating-icon.p-icon {
 	width: 5rem !important;
 	height: 5rem !important;
 }
+
 .p-rating .p-rating-item.p-focus {
 	box-shadow: none !important;
 	border: none !important
-}
-</style>
+}</style>
