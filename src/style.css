@@ -5,12 +5,12 @@
 @layer base {
     h1 {
         @apply 
-        text-xl lg:text-6xl md:text-2xl
+        text-6xl
         font-serif
     }
     h2 {
         @apply
-        text-lg lg:text-2xl md:text-xl
+        text-2xl
         font-serif
         font-light
     }

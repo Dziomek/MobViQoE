@@ -1,7 +1,7 @@
 <template>
 	<MenuComponent />
 	<div id="assessment-layer" class="absolute top-0 left-0 w-full min-h-full z-10 flex flex-col items-center 
-	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto ">
+	justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
 		<h1 class="text-title">
 			{{ language == 'en'
 				? 'How can you evaluate the video quality?'

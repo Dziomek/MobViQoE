@@ -1,7 +1,7 @@
 <template>
     <MenuComponent />
     <ContinueLayer v-if="showContinueLayer" />
-    <div v-else id="start-view" class="flex flex-col w-full h-full justify-center items-center py-16">
+    <div v-else id="start-view" class="flex flex-col w-full min-h-full justify-center items-center py-16 overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center">
             <div class="flex flex-col items-center gap-8">
                 <h1 class="text-title">MobiViQoE</h1>

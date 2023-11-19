@@ -1,10 +1,10 @@
 <template>
-	<div class="fixed top-0 left-0 flex flex-col w-full h-full overflow-auto" style="background-color: black;">
+	<div class="flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
 			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
-		<video :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
+		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
 			<source v-else-if="randomIndex == 1" src="../assets/videos/vid1.mp4">
 			<source v-else-if="randomIndex == 2" src="../assets/videos/vid2.mp4">
