@@ -42,6 +42,7 @@ export function syncSessionStorage() {
     if(!historyCookie) {
         if(sessionStorage.getItem('history')) sessionStorage.removeItem('history')
     }
+    if(!historyCookie)
     sessionStorage.clear()
 }
 
@@ -50,4 +51,20 @@ export function finishSurvey() {
     store.clearStore()
     sessionStorage.clear()
     removeExistingCookies()
+}
+
+export function syncLanguage() {
+    const store = useStore()
+    const cookie = Cookies.get('language')
+    const sessionItem = sessionStorage.getItem('language')
+    if(cookie) {
+        store.selectLanguage(cookie, true, false)
+        return
+    } 
+    if(sessionItem) {
+        store.selectLanguage(sessionItem, false, true)
+        return
+    }
+    store.selectLanguage()
+    return
 }
