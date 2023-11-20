@@ -2,7 +2,7 @@
     <MenuComponent />
     <div id="personal-survey"
         class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
-        <div id="animated" class="flex flex-col gap-16 items-center w-2/3 text-light">
+        <div id="animated" class="flex flex-col gap-16 items-center w-4/5 text-light">
             <div class="flex flex-col items-center gap-8">
                 <h1 class="text-title">{{ language == 'en' ? 'Personal survey' : 'Ankieta osobowa' }}</h1>
                 <PersonalSurveyIcon width="100" height="100" />

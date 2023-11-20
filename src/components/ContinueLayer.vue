@@ -68,6 +68,7 @@ const timelineData = [
 function startNewSession() {
     removeExistingCookies()
     sessionStorage.removeItem('sessionId')
+    sessionStorage.removeItem('sessionState')
     showContinueLayer.value = false
 }
 

@@ -12,7 +12,7 @@
                 </h1>
                 <InformationIcon />
             </div>
-            <div id="information" class="flex flex-col flex-wrap gap-8 text-light justify-start w-2/3">
+            <div id="information" class="flex flex-col flex-wrap gap-8 text-light justify-start w-4/5">
                 <div class="flex flex-col w-full break-normal gap-2">
                     <div class="flex gap-2 items-center">
                         <PersonalSurveyIcon width="40" height="40" />
