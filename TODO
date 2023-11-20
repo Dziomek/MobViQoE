@@ -1,5 +1,4 @@
-* Add language to session storage and cookie to remember user settings
-* Add mobile responsivness
 * W informacji o wykrytej sesji dodać jej progres (lista przez ktore sie przeszlo viewsy) Timeline czy cos
 * Dostosowac zapis danych w baze (parametry video np)
 * pomyslec o dynamicznym renderowaniu obiektów video
+* responsywosc ikonek

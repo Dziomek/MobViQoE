@@ -1,17 +1,20 @@
 <template>
     <MenuComponent />
     <ContinueLayer v-if="showContinueLayer" />
-    <div v-else id="start-view" class="flex flex-col w-full min-h-full justify-center items-center py-16 overflow-auto">
+    <div v-else id="start-view" class="flex flex-col w-full min-h-full justify-center items-center px-8 py-16 overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center">
             <div class="flex flex-col items-center gap-8">
                 <h1 class="text-title">MobiViQoE</h1>
                 <CameraIcon />
             </div>
-            <h2 class="text-light">{{ language == 'en' 
+            <h2 class="text-light text-center">
+            {{ language == 'en' 
             ? 
             'Application for performing video quality assessment' 
             : 
-            'Aplikacja do przeprowadzania badań jakości wideo' }}</h2>
+            'Aplikacja do przeprowadzania badań jakości wideo' 
+            }}
+            </h2>
             <Button @click="navigateToInstruction" :label="language == 'en' ? 'Get started' : 'Rozpocznij'" outlined />
          </div>
     </div>

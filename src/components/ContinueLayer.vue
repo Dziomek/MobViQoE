@@ -1,7 +1,8 @@
 <template>
+    <MenuComponent />
     <div id="continue-layer" class="absolute top-0 left-0 min-w-full min-h-screen z-10 flex flex-col items-center 
     justify-center bg-layer-color text-light text-center px-8 py-16 gap-16 overflow-auto">
-        <div class="flex flex-col items-center gap-8">
+        <div class="flex flex-col items-center gap-8 items-center text-center">
             <h1 class="text-title">
                 {{ language == 'en'
                     ?
@@ -41,6 +42,7 @@ import Button from 'primevue/button'
 import { removeExistingCookies, getCookiesData } from '../cookiesComposables.js'
 import { useRouter } from 'vue-router'
 import UnfinishedSessionIcon from '../assets/icons/UnfinishedSessionIcon.vue'
+import MenuComponent from '../components/MenuComponent.vue'
 // import Timeline from 'primevue/timeline'
 
 const router = useRouter()

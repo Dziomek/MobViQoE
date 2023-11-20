@@ -43,7 +43,7 @@
 					{{ language == 'en'
 						? 'Your score:'
 						: 'Twoja ocena:'
-					}} 
+					}}
 				</h2>
 				<div class="flex gap-2 items-center">
 					<BadIcon :size="40" />
@@ -60,7 +60,7 @@
 					{{ language == 'en'
 						? 'Your score:'
 						: 'Twoja ocena:'
-					}} 
+					}}
 				</h2>
 				<div class="flex gap-2 items-center">
 					<PoorIcon :size="40" />
@@ -77,7 +77,7 @@
 					{{ language == 'en'
 						? 'Your score:'
 						: 'Twoja ocena:'
-					}} 
+					}}
 				</h2>
 				<div class="flex gap-2 items-center">
 					<FairIcon :size="40" />
@@ -94,7 +94,7 @@
 					{{ language == 'en'
 						? 'Your score:'
 						: 'Twoja ocena:'
-					}}  
+					}}
 				</h2>
 				<div class="flex gap-2 items-center">
 					<GoodIcon :size="40" />
@@ -111,7 +111,7 @@
 					{{ language == 'en'
 						? 'Your score:'
 						: 'Twoja ocena:'
-					}} 
+					}}
 				</h2>
 				<div class="flex gap-2 items-center">
 					<ExcellentIcon :size="40" />
@@ -124,8 +124,10 @@
 				</div>
 			</div>
 		</div>
-		<Button :icon="videosWatched != SURVEY_LENGTH ? 'pi pi-play' : 'pi pi-check'" :disabled="!assessment" @click="submitAssessment"
-			:label="videosWatched != SURVEY_LENGTH ? language == 'en' ? 'Next video' : 'Nastepne wideo' : language == 'en' ? 'Finish' : 'Zakończ'" outlined size="large" />
+		<Button :icon="videosWatched != SURVEY_LENGTH ? 'pi pi-play' : 'pi pi-check'" :disabled="!assessment"
+			@click="submitAssessment"
+			:label="videosWatched != SURVEY_LENGTH ? language == 'en' ? 'Next video' : 'Nastepne wideo' : language == 'en' ? 'Finish' : 'Zakończ'"
+			outlined size="large" />
 	</div>
 </template>
 
@@ -237,15 +239,32 @@ function getGyroAvg() {
 	height: 3rem !important;
 }  */
 .p-rating {
-	gap: 4rem !important;
+	gap: 1rem !important;
 }
 
 .p-rating .p-rating-item .p-rating-icon.p-icon {
-	width: 5rem !important;
-	height: 5rem !important;
+	width: 2rem !important;
+	height: 2rem !important;
 }
 
 .p-rating .p-rating-item.p-focus {
 	box-shadow: none !important;
 	border: none !important
-}</style>
+}
+
+@media (min-width: 1024px) {
+	.p-rating {
+		gap: 4rem !important;
+	}
+
+	.p-rating .p-rating-item .p-rating-icon.p-icon {
+		width: 5rem !important;
+		height: 5rem !important;
+	}
+
+	.p-rating .p-rating-item.p-focus {
+		box-shadow: none !important;
+		border: none !important
+	}
+}
+</style> 

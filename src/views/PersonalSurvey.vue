@@ -1,10 +1,10 @@
 <template>
     <MenuComponent />
     <div id="personal-survey"
-        class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
+        class="flex flex-col w-full min-h-full justify-center items-center px-8 py-16 bg-layer-color overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center w-4/5 text-light">
             <div class="flex flex-col items-center gap-8">
-                <h1 class="text-title">{{ language == 'en' ? 'Personal survey' : 'Ankieta osobowa' }}</h1>
+                <h1 class="text-title text-center">{{ language == 'en' ? 'Personal survey' : 'Ankieta osobowa' }}</h1>
                 <PersonalSurveyIcon width="100" height="100" />
             </div>
             <div class="flex flex-col w-full break-normal gap-8">
@@ -201,6 +201,7 @@ import FemaleIcon from '../assets/icons/FemaleIcon.vue'
 import EyeglassesIcon from '../assets/icons/EyeglassesIcon.vue'
 import EyeIcon from '../assets/icons/EyeIcon.vue'
 import MenuComponent from "../components/MenuComponent.vue"
+import Checkbox from 'primevue/checkbox'
 
 const store = useStore()
 const { sessionId, language } = storeToRefs(store)

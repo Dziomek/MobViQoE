@@ -3,34 +3,34 @@
 @tailwind utilities;
 
 @layer base {
-    h1 {
-        @apply 
-        text-6xl
+  h1 {
+    @apply lg:text-6xl
+        text-3xl
+        font-serif;
+  }
+  h2 {
+    @apply lg:text-2xl
+        text-lg
         font-serif
-    }
-    h2 {
-        @apply
-        text-2xl
-        font-serif
-        font-light
-    }
-    h3 {
-        @apply
-        text-sm
-        font-thin
-    }
+        font-light;
+  }
+  h3 {
+    @apply text-sm
+        font-thin;
+  }
 }
 
 #app {
-    height: 100vh;
-    overflow: auto;
+  height: 100vh;
+  overflow: auto;
 }
 
-::-webkit-scrollbar {
+@media (min-width: 1024px) {
+  ::-webkit-scrollbar {
     width: 10px;
-}
+  }
 
-::-webkit-scrollbar-thumb {
-    /* background: #14B8A6; */
+  ::-webkit-scrollbar-thumb {
     background: darkgray;
+  }
 }

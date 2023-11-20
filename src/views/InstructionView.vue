@@ -1,7 +1,7 @@
 <template>
     <MenuComponent />
     <div id="instruction"
-        class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
+        class="flex flex-col w-full min-h-full justify-center items-center px-8 py-16 bg-layer-color overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center w-full">
             <div class="flex flex-col items-center gap-8">
                 <h1 class="text-title">
@@ -23,13 +23,13 @@
                             }}
                         </h2>
                     </div>
-                    <span>
+                    <p>
                         {{ language == 'en'
                             ? 'We will ask you to complete a short personal questionnaire that will help us better interpret the research results. The survey should take no longer than a minute'
                             : 'Poprosimy Cię o wypełnienie krótkiej ankiety osobowej, która pomoże nam lepiej zinterpretować wynik badania. Ankieta nie powinna zająć dłużej niż minutę'
                         }}
                         <GoodIcon />
-                    </span>
+                    </p>
                 </div>
                 <div class="flex flex-col w-full break-normal gap-2">
                     <div class="flex gap-2 items-center">
