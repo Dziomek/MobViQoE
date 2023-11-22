@@ -2,7 +2,8 @@
 	<div class="fixed top-0 left-0 flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :video="video" :videosWatched="excludedIndexes.length" />
+			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions"
+			 :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
 			style="height: 100vh; width: 100vw;">
@@ -74,6 +75,7 @@ const gyroMeasurements = ref([])
 const accMeasurements = ref([])
 const lightMeasurements = ref([])
 const connectionData = ref({ effectiveType: '', measurements: [] })
+const screenDimensions = ref({ width: 0, height: 0 })
 
 function handleDeviceOrientation(event) {
 	const gyroData = {
@@ -100,7 +102,7 @@ function handleConnectionData() {
 		rtt: connection.rtt,
 	}
 	connectionData.value.measurements.push(data)
-	console.log(connectionData.value)
+	console.log('INTERNET MEASUREMENT NR', connectionData.value.measurements.length)
 }
 
 let accInterval
@@ -126,6 +128,7 @@ function nextVideo() {
 		accMeasurements.value = []
 		gyroMeasurements.value = []
 		connectionData.value = []
+		screenDimensions.value = { width: 0, height: 0 }
 		updateSessionState()
 	}
 }
@@ -167,7 +170,6 @@ watch(
 
 			// INTERNET
 			clearInterval(connectionInterval)
-			console.log(connectionData.value)
 		}
 	}
 )
@@ -205,6 +207,9 @@ watch(
 				handleConnectionData()
 				connectionInterval = setInterval(handleConnectionData, 5000)
 			} 
+			/// DIMENSIONS
+			screenDimensions.value.width = window.screen.width;
+			screenDimensions.value.height = window.screen.height;
 		}
 	}
 )

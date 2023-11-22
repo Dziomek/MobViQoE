@@ -147,6 +147,11 @@ const props = defineProps({
 		required: true,
 		default: []
 	},
+	screenDimensions: {
+		type: Object,
+		required: true,
+		default: { width: 0, height: 0 }
+	},
 	connectionData: {
 		type: Object,
 		required: true,
@@ -166,7 +171,8 @@ async function submitAssessment() {
 			score: assessment.value, 
 			accAvg: accAvg.value, 
 			gyroAvg: gyroAvg.value,
-			connectionData: connectionDataAvg.value })
+			connectionData: connectionDataAvg.value,
+			screenDimensions: props.screenDimensions })
 	})
 	emits('nextVideo')
 }
@@ -205,8 +211,6 @@ function getGyroAvg() {
 
 function getConnectionDataAvg() {
 	const dataLength = props.connectionData.measurements.length
-	console.log(dataLength)
-	console.log(props.connectionData)
 	const reduced = props.connectionData.measurements.reduce((acc, val) => {
 		acc.downlink += val.downlink,
 		acc.rtt += val.rtt

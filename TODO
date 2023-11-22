@@ -2,3 +2,5 @@
 * Dostosowac zapis danych w baze (parametry video np)
 * pomyslec o dynamicznym renderowaniu obiektów video
 * responsywosc ikonek
+* pobieranie np. informacji o ekranie do bazy danych
+* pomiary wideo zbierają się dalej po zakonczeniu wideo, dlaczego?
