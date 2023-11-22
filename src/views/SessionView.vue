@@ -2,7 +2,7 @@
 	<div class="fixed top-0 left-0 flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length" />
+			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
 			style="height: 100vh; width: 100vw;">
@@ -24,7 +24,6 @@ import { onMounted, ref, inject, watch } from 'vue'
 import { useRouter } from 'vue-router';
 import ControlsLayer from '../components/ControlsLayer.vue'
 import AssessmentLayer from '../components/AssessmentLayer.vue'
-import SensorsComponent from '../components/SensorsComponent.vue'
 import { VIDEO_CONFIG, SURVEY_LENGTH } from '../videoConfig.js'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
@@ -97,13 +96,11 @@ function handleDeviceMotion(event) {
 function handleConnectionData() {
 	const connection = navigator.connection
 	const data = {
-		effectiveType: connection.effectiveType,
 		downlink: connection.downlink,
 		rtt: connection.rtt,
-		saveData: connection.saveData
 	}
 	connectionData.value.measurements.push(data)
-	console.log(data, connectionData)
+	console.log(connectionData.value)
 }
 
 let accInterval
@@ -111,11 +108,6 @@ let accIntervalDelete
 let gyroInterval
 let gyroIntervalDelete
 let connectionInterval
-
-onMounted(() => {
-	setSessionState()
-	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
-})
 
 function nextVideo() {
 	if (excludedIndexes.value.length == SURVEY_LENGTH) {
@@ -133,7 +125,7 @@ function nextVideo() {
 		///
 		accMeasurements.value = []
 		gyroMeasurements.value = []
-		connectionMeasurements.value = []
+		connectionData.value = []
 		updateSessionState()
 	}
 }
@@ -208,13 +200,19 @@ watch(
 			/// INTERNET
 			if (navigator.connection) {
 				const connection = navigator.connection
-				connectionData.value.type = connection.effectiveType
+				connectionData.value.effectiveType = connection.effectiveType
+				console.log(connectionData.value)
 				handleConnectionData()
 				connectionInterval = setInterval(handleConnectionData, 5000)
 			} 
 		}
 	}
 )
+
+onMounted(() => {
+	setSessionState()
+	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
+})
 
 </script>
 

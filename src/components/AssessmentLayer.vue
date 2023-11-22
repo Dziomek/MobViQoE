@@ -8,34 +8,6 @@
 				: 'Jak oceniasz jakość tego wideo?'
 			}}
 		</h1>
-		<!-- <h1>{{ video.title }}</h1> -->
-		<!-- <div class="flex gap-20 flex-wrap">
-			<div class="flex items-center gap-2">
-        		<RadioButton v-model="assessment" name="excellent" value="Excellent" />
-				<ExcellentIcon size="40"/>
-        		<label class="text-xl" for="excellent">Excellent</label>
-    		</div>
-    		<div class="flex items-center gap-2">
-        		<RadioButton v-model="assessment" name="good" value="Good" />
-				<GoodIcon size="40"/>
-        		<label class="text-xl" for="good">Good</label>
-    		</div>
-			<div class="flex items-center gap-2">
-				<RadioButton v-model="assessment" name="fair" value="Fair" />
-				<FairIcon size="40"/>
-				<label class="text-xl" for="fair">Fair</label>
-			</div>
-			<div class="flex items-center gap-2">
-				<RadioButton v-model="assessment" name="poor" value="Poor" />
-				<PoorIcon size="40"/>
-				<label class="text-xl" for="poor">Poor</label>
-			</div>
-			<div class="flex items-center gap-2">
-				<RadioButton v-model="assessment" name="bad" value="Bad" />
-				<BadIcon size="40"/>
-				<label class="text-xl" for="bad">Bad</label>
-			</div>
-		</div> -->
 		<Rating v-model="assessment" :cancel="false" />
 		<div class="flex gap-5 h-[1rem]">
 			<div v-if="assessment == 1" class="flex gap-5 items-center">
@@ -133,9 +105,8 @@
 
 <script setup>
 import { collection, doc, updateDoc, arrayUnion } from "firebase/firestore"
-import RadioButton from 'primevue/radiobutton'
 import Button from 'primevue/button'
-import { onMounted, ref } from 'vue'
+import { ref } from 'vue'
 import { db } from '../firebaseConfig'
 import { useStore } from "../store"
 import { storeToRefs } from 'pinia'
@@ -146,12 +117,12 @@ import FairIcon from '../assets/icons/FairIcon.vue'
 import PoorIcon from '../assets/icons/PoorIcon.vue'
 import BadIcon from '../assets/icons/BadIcon.vue'
 import Rating from 'primevue/rating'
-import CameraIcon from "../assets/icons/CameraIcon.vue"
 import MenuComponent from "./MenuComponent.vue"
 
 const assessment = ref(null)
 const accAvg = ref(getAccAvg())
 const gyroAvg = ref(getGyroAvg())
+const connectionDataAvg = ref(getConnectionDataAvg())
 
 const store = useStore()
 const { sessionId, language } = storeToRefs(store)
@@ -176,6 +147,11 @@ const props = defineProps({
 		required: true,
 		default: []
 	},
+	connectionData: {
+		type: Object,
+		required: true,
+		default: { type: '', measurements: [] }
+	},
 	videosWatched: {
 		type: Number,
 		required: true,
@@ -185,7 +161,12 @@ const props = defineProps({
 
 async function submitAssessment() {
 	await updateDoc(doc(measurementsRef, sessionId.value), {
-		scores: arrayUnion({ videoId: props.video.index, score: assessment.value, accAvg: accAvg.value, gyroAvg: gyroAvg.value })
+		scores: arrayUnion({ 
+			videoId: props.video.index, 
+			score: assessment.value, 
+			accAvg: accAvg.value, 
+			gyroAvg: gyroAvg.value,
+			connectionData: connectionDataAvg.value })
 	})
 	emits('nextVideo')
 }
@@ -210,7 +191,7 @@ function getGyroAvg() {
 	const dataLength = props.gyroMeasurements.length
 	const reduced = props.gyroMeasurements.reduce((acc, val) => {
 		acc.alpha += val.alpha
-		acc.beta = + val.beta
+		acc.beta += val.beta
 		acc.gamma += val.gamma
 		return acc
 	}, { alpha: 0, beta: 0, gamma: 0 })
@@ -221,23 +202,26 @@ function getGyroAvg() {
 		gamma: reduced.gamma / dataLength
 	}
 }
+
+function getConnectionDataAvg() {
+	const dataLength = props.connectionData.measurements.length
+	console.log(dataLength)
+	console.log(props.connectionData)
+	const reduced = props.connectionData.measurements.reduce((acc, val) => {
+		acc.downlink += val.downlink,
+		acc.rtt += val.rtt
+		return acc
+	}, { downlink: 0, rtt: 0 })
+	
+	return {
+		effectiveType: props.connectionData.effectiveType,
+		downlink: reduced.downlink / dataLength,
+		rtt: reduced.rtt / dataLength,
+	}
+}
 </script>
 
 <style>
-/* #assessment-layer .p-radiobutton .p-radiobutton-box {
-	width: 3rem !important;
-	height: 3rem !important;
-}
-
-#assessment-layer .p-radiobutton .p-radiobutton-box .p-radiobutton-icon {
-	width: 2.25rem !important;
-	height: 2.25rem !important;
-}
-
-#assessment-layer .p-radiobutton {
-	width: 3rem !important;
-	height: 3rem !important;
-}  */
 .p-rating {
 	gap: 1rem !important;
 }
