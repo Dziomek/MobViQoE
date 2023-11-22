@@ -4,7 +4,8 @@
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
 			:gyroMeasurements="gyroMeasurements" :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
-		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false" style="height: 100vh; width: 100vw;">
+		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
+			style="height: 100vh; width: 100vw;">
 			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
 			<source v-else-if="randomIndex == 1" src="../assets/videos/vid1.mp4">
 			<source v-else-if="randomIndex == 2" src="../assets/videos/vid2.mp4">
@@ -70,44 +71,46 @@ function playVideo() {
 
 /// SENSORS
 
-const gyroData = ref({ // gyroscope
-	alpha: null,
-	beta: null,
-	gamma: null
-})
-const accData = ref({ // accelerometer
-	x: null,
-	y: null,
-	z: null
-})
-const lightData = ref() // light sensor
-
 const gyroMeasurements = ref([])
 const accMeasurements = ref([])
 const lightMeasurements = ref([])
+const connectionData = ref({ effectiveType: '', measurements: [] })
 
 function handleDeviceOrientation(event) {
-	gyroData.value = {
-		alpha: event.alpha || 0, // Obrót wokół osi Z (stopnie od północy)
-		beta: event.beta || 0, // Pochylenie w przód/tył (stopnie)
-		gamma: event.gamma || 0, // Przechylenie w lewo/prawo (stopnie)
+	const gyroData = {
+		alpha: event.alpha || 0,
+		beta: event.beta || 0,
+		gamma: event.gamma || 0,
 	}
-	gyroMeasurements.value.push(gyroData.value)
+	gyroMeasurements.value.push(gyroData)
 }
 
 function handleDeviceMotion(event) {
-	accData.value = {
+	const accData = {
 		x: event.acceleration.x || 0,
 		y: event.acceleration.y || 0,
 		z: event.acceleration.z || 0,
 	};
-	accMeasurements.value.push(accData.value)
+	accMeasurements.value.push(accData)
+}
+
+function handleConnectionData() {
+	const connection = navigator.connection
+	const data = {
+		effectiveType: connection.effectiveType,
+		downlink: connection.downlink,
+		rtt: connection.rtt,
+		saveData: connection.saveData
+	}
+	connectionData.value.measurements.push(data)
+	console.log(data, connectionData)
 }
 
 let accInterval
 let accIntervalDelete
 let gyroInterval
 let gyroIntervalDelete
+let connectionInterval
 
 onMounted(() => {
 	setSessionState()
@@ -128,10 +131,9 @@ function nextVideo() {
 		playToggled.value = false
 		videoEnded.value = false
 		///
-		gyroData.value = null
-		accData.value = null
 		accMeasurements.value = []
 		gyroMeasurements.value = []
+		connectionMeasurements.value = []
 		updateSessionState()
 	}
 }
@@ -161,14 +163,19 @@ watch(
 	() => {
 		if (videoEnded.value) {
 			console.log('STOPPING EVENTS')
-
+			/// ACC
 			window.removeEventListener('devicemotion', handleDeviceMotion)
 			clearInterval(accInterval)
 			clearInterval(accIntervalDelete)
 
+			// GYRO
 			window.removeEventListener('deviceorientation', handleDeviceOrientation)
 			clearInterval(gyroInterval)
 			clearInterval(gyroIntervalDelete)
+
+			// INTERNET
+			clearInterval(connectionInterval)
+			console.log(connectionData.value)
 		}
 	}
 )
@@ -178,6 +185,7 @@ watch(
 	() => {
 		if (playToggled.value) {
 			console.log('STARTING EVENTS')
+			/// ACC
 			if ('DeviceMotionEvent' in window) {
 				accInterval = setInterval(() => {
 					window.addEventListener('devicemotion', handleDeviceMotion)
@@ -188,7 +196,7 @@ watch(
 			} else {
 				console.error('DeviceMotionEvent is not supported in this browser');
 			}
-
+			/// GYRO
 			if ('DeviceOrientationEvent' in window) {
 				gyroInterval = setInterval(() => {
 					window.addEventListener('deviceorientation', handleDeviceOrientation)
@@ -197,8 +205,14 @@ watch(
 					window.removeEventListener('deviceorientation', handleDeviceOrientation)
 				}, 3100)
 			}
+			/// INTERNET
+			if (navigator.connection) {
+				const connection = navigator.connection
+				connectionData.value.type = connection.effectiveType
+				handleConnectionData()
+				connectionInterval = setInterval(handleConnectionData, 5000)
+			} 
 		}
-
 	}
 )
 
