@@ -53,6 +53,12 @@ export function finishSurvey() {
     removeExistingCookies()
 }
 
+export function clearDataWithoutCookie() {
+    const store = useStore()
+    store.clearStore()
+    sessionStorage.clear()
+}
+
 export function syncLanguage() {
     const store = useStore()
     const cookie = Cookies.get('language')

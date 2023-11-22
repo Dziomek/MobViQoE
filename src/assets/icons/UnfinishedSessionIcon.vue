@@ -4,7 +4,7 @@
     </svg>
 </template>
 <script setup>
-defineProps({
+defineProps({   
     size: {
         type: Number,
         default: 100
