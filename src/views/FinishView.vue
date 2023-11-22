@@ -1,7 +1,7 @@
 <template>
     <div id="finish" class="flex flex-col w-full min-h-full justify-center items-center px-32 py-16 bg-layer-color overflow-auto">
         <div id="animated" class="flex flex-col gap-16 items-center w-full">
-            <div class="flex flex-col items-center gap-8">
+            <div class="flex flex-col items-center gap-8 text-center">
                 <h1 class="text-title">
                     {{ language == 'en'
 						? 'Thank you!'

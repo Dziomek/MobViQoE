@@ -101,6 +101,7 @@ function handleConnectionData() {
 		downlink: connection.downlink,
 		rtt: connection.rtt,
 	}
+	console.log(connectionData.value)
 	connectionData.value.measurements.push(data)
 	console.log('INTERNET MEASUREMENT NR', connectionData.value.measurements.length)
 }
@@ -127,7 +128,7 @@ function nextVideo() {
 		///
 		accMeasurements.value = []
 		gyroMeasurements.value = []
-		connectionData.value = []
+		connectionData.value = { effectiveType: '', measurements: [] }
 		screenDimensions.value = { width: 0, height: 0 }
 		updateSessionState()
 	}
