@@ -152,6 +152,11 @@ const props = defineProps({
 		required: true,
 		default: { width: 0, height: 0 }
 	},
+	windowDimensions: {
+		type: Object,
+		required: true,
+		default: { width: 0, height: 0 }
+	},
 	connectionData: {
 		type: Object,
 		required: true,
@@ -172,7 +177,9 @@ async function submitAssessment() {
 			accAvg: accAvg.value, 
 			gyroAvg: gyroAvg.value,
 			connectionData: connectionDataAvg.value,
-			screenDimensions: props.screenDimensions })
+			screenDimensions: props.screenDimensions,
+			windowDimensions: props.windowDimensions 
+		})
 	})
 	emits('nextVideo')
 }

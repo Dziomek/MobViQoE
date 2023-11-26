@@ -2,7 +2,7 @@
 	<div class="fixed top-0 left-0 flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions"
+			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions" :windowDimensions="windowDimensions"
 			 :video="video" :videosWatched="excludedIndexes.length" />
 		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
@@ -76,6 +76,7 @@ const accMeasurements = ref([])
 const lightMeasurements = ref([])
 const connectionData = ref({ effectiveType: '', measurements: [] })
 const screenDimensions = ref({ width: 0, height: 0 })
+const windowDimensions = ref({ width: 0, height: 0 })
 
 function handleDeviceOrientation(event) {
 	const gyroData = {
@@ -130,6 +131,7 @@ function nextVideo() {
 		gyroMeasurements.value = []
 		connectionData.value = { effectiveType: '', measurements: [] }
 		screenDimensions.value = { width: 0, height: 0 }
+		windowDimensions.value = { width: 0, height: 0 }
 		updateSessionState()
 	}
 }
@@ -209,8 +211,16 @@ watch(
 				connectionInterval = setInterval(handleConnectionData, 5000)
 			} 
 			/// DIMENSIONS
-			screenDimensions.value.width = window.screen.width;
-			screenDimensions.value.height = window.screen.height;
+			
+			//SCREEN
+			screenDimensions.value.width = window.screen.width
+			screenDimensions.value.height = window.screen.height
+
+			//WINDOW
+			windowDimensions.value.width = window.innerWidth
+			windowDimensions.value.height = window.innerHeight
+
+			console.log(screenDimensions.value, windowDimensions.value)
 		}
 	}
 )
