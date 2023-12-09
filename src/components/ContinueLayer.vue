@@ -11,7 +11,11 @@
                     'Wykryto nieukończoną sesję'
                 }}
             </h1>
-            <UnfinishedSessionIcon />
+            <svg xmlns="http://www.w3.org/2000/svg" height="100" viewBox="0 -960 960 960" width="100"
+                fill="#E6E6E6">
+                <path
+                    d="M320-120v-80h80v-80H160q-33 0-56.5-23.5T80-360v-400q0-33 23.5-56.5T160-840h640q33 0 56.5 23.5T880-760v400q0 33-23.5 56.5T800-280H560v80h80v80H320ZM160-360h640v-400H160v400Zm0 0v-400 400Z" />
+            </svg>
         </div>
         <h2>
             {{ language == 'en'
@@ -41,7 +45,6 @@ import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
 import { removeExistingCookies, getCookiesData } from '../cookiesComposables.js'
 import { useRouter } from 'vue-router'
-import UnfinishedSessionIcon from '../assets/icons/UnfinishedSessionIcon.vue'
 import MenuComponent from '../components/MenuComponent.vue'
 // import Timeline from 'primevue/timeline'
 
@@ -53,10 +56,10 @@ const { sessionId, sessionState, showContinueLayer, language } = storeToRefs(sto
 const timelineData = [
     {
         name: 'Instruction'
-    }, 
-    { 
+    },
+    {
         name: 'Personal survey'
-    }, 
+    },
     {
         name: 'Video',
         number: 3
