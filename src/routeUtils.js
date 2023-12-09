@@ -1,8 +1,8 @@
-import { useStore } from "./store"
+import { useStore } from "./store.js"
 import { storeToRefs } from "pinia"
 import Cookies from "js-cookie"
 import { v4 as uuidv4 } from 'uuid'
-import { removeExistingCookies } from './cookiesComposables.js'
+import { removeExistingCookies } from './cookiesUtils.js'
 
 export function syncSessionId() {
     const store = useStore()

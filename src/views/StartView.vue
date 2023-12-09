@@ -49,14 +49,4 @@ function navigateToInstruction() {
     background-size: cover;
     background-position: center;
 }
-
-#animated {
-    animation: fadeIn ease-in .9s;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-}
 </style>

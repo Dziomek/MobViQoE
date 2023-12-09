@@ -43,7 +43,7 @@
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import Button from 'primevue/button'
-import { removeExistingCookies, getCookiesData } from '../cookiesComposables.js'
+import { removeExistingCookies, getCookiesData } from '../cookiesUtils.js'
 import { useRouter } from 'vue-router'
 import MenuComponent from '../components/MenuComponent.vue'
 // import Timeline from 'primevue/timeline'

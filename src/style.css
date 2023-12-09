@@ -25,6 +25,16 @@
   overflow: auto;
 }
 
+#animated {
+  animation: fadeIn ease-in .9s;
+}
+
+@keyframes fadeIn {
+  0% {
+      opacity: 0;
+  }
+}
+
 @media (min-width: 1024px) {
   ::-webkit-scrollbar {
     width: 10px;

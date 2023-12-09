@@ -5,8 +5,8 @@ import PersonalSurvey from "./views/PersonalSurvey.vue"
 import InstructionView from "./views/InstructionView.vue"
 import FinishView from './views/FinishView.vue'
 import View404 from './views/View404.vue'
-import { syncSessionId, decideOnContinueLayerVisibility, syncSessionStorage, finishSurvey, syncLanguage, clearDataWithoutCookie } from './routeComposables.js'
-import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesComposables.js"
+import { syncSessionId, decideOnContinueLayerVisibility, syncSessionStorage, finishSurvey, syncLanguage, clearDataWithoutCookie } from './routeUtils.js'
+import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesUtils.js"
 
 const routes = [
     {   

@@ -115,14 +115,3 @@ function navigateToSurvey() {
 }
 
 </script>
-
-<style scoped>
-#animated {
-    animation: fadeIn ease-in .9s;
-}
-
-@keyframes fadeIn {
-    0% {
-        opacity: 0;
-    }
-}</style>
