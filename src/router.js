@@ -8,7 +8,7 @@ import View404 from './views/View404.vue'
 import { syncSessionId, decideOnContinueLayerVisibility, syncSessionStorage, finishSurvey, syncLanguage, clearDataWithoutCookie } from './routeUtils.js'
 import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesUtils.js"
 
-const routes = [
+export const routes = [
     {   
         path: '/', 
         name: 'start', 
