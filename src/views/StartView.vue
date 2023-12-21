@@ -29,10 +29,12 @@ import { useRouter } from 'vue-router'
 import Button from 'primevue/button'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
-import ContinueLayer from '../components/ContinueLayer.vue'
 import MenuComponent from '../components/MenuComponent.vue'
+import { defineAsyncComponent } from 'vue'
 
 const router = useRouter()
+
+const ContinueLayer = defineAsyncComponent(() => import('../components/ContinueLayer.vue'))
 
 const store = useStore()
 const { showContinueLayer, language } = storeToRefs(store)

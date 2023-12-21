@@ -21,14 +21,15 @@
 </template>
  
 <script setup>
-import { onMounted, ref, inject, watch } from 'vue'
+import { onMounted, ref, inject, watch, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router';
-import ControlsLayer from '../components/ControlsLayer.vue'
-import AssessmentLayer from '../components/AssessmentLayer.vue'
 import { VIDEO_CONFIG, SURVEY_LENGTH } from '../videoConfig.js'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { setCookieBeforeSession } from '../cookiesUtils.js'
+
+const ControlsLayer = defineAsyncComponent(() => import('../components/ControlsLayer.vue'))
+const AssessmentLayer = defineAsyncComponent(() => import('../components/AssessmentLayer.vue'))
 
 /// APP/ROUTER
 

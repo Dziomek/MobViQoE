@@ -151,9 +151,9 @@
 </template>
 
 <script setup>
-import { collection, doc, setDoc, updateDoc } from "firebase/firestore"
+import { collection, doc, setDoc } from "firebase/firestore"
 import { db } from '../firebaseConfig.js'
-import { nextTick, onMounted, ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import RadioButton from "primevue/radiobutton"
 import Button from "primevue/button"
 import { useRouter } from 'vue-router'
