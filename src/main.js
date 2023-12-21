@@ -6,7 +6,6 @@ import PrimeVue from 'primevue/config'
 import { router } from './router'
 import 'primevue/resources/themes/lara-light-teal/theme.css'
 import 'primeicons/primeicons.css'
-import "/node_modules/flag-icons/css/flag-icons.min.css"
 
 const pinia = createPinia()
 const app = createApp(App)
