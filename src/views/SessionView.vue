@@ -14,7 +14,7 @@
 <script setup>
 import { onMounted, ref, inject, watch, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router';
-import { VIDEO_CONFIG, SURVEY_LENGTH } from '../videoConfig.js'
+import { VIDEO_CONFIG, VIDEOS_NUMBER, SURVEY_LENGTH } from '../videoConfig.js'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { setCookieBeforeSession } from '../cookiesUtils.js'
@@ -37,7 +37,7 @@ const { sessionState } = storeToRefs(store)
 const videoElement = ref()
 const playToggled = ref(false)
 const videoEnded = ref(false)
-const randomIndex = ref(Math.floor(Math.random() * 5))
+const randomIndex = ref(Math.floor(Math.random() * VIDEOS_NUMBER))
 const video = ref(VIDEO_CONFIG[randomIndex.value])
 const excludedIndexes = ref([randomIndex.value])
 

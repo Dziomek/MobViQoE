@@ -6,4 +6,7 @@ export const VIDEO_CONFIG = [
     { index: 4, title: 'vid4', src: 'https://upload.wikimedia.org/wikipedia/commons/8/8b/2021-08-11%2C_Bison_crosses_the_road%2C_Yellowstone_National_Park.webm'},
 ]
 
+export const VIDEOS_NUMBER = VIDEO_CONFIG.length
+
 export const SURVEY_LENGTH = 3
+
