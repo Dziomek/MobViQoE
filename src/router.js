@@ -12,7 +12,7 @@ export const routes = [
     {   
         path: '/', 
         name: 'start', 
-        component: StartView,
+        component: () => import("./views/StartView.vue"),
         beforeEnter: (to, from, next) => {
             syncLanguage()
             syncSessionStorage()
@@ -24,7 +24,7 @@ export const routes = [
     { 
         path: '/instruction', 
         name: 'instruction', 
-        component: InstructionView,
+        component: () => import("./views/InstructionView.vue"),
         beforeEnter: (to, from, next) => {
             syncLanguage()
             const currentRoute = sessionStorage.getItem('currentRoute')
@@ -41,7 +41,7 @@ export const routes = [
     { 
         path: '/survey', 
         name: 'survey', 
-        component: PersonalSurvey ,
+        component: () => import("./views/PersonalSurvey.vue"),
         beforeEnter: (to, from, next) => {
             syncLanguage()
             const currentRoute = sessionStorage.getItem('currentRoute')
@@ -58,7 +58,7 @@ export const routes = [
     {   
         path: '/session', 
         name: 'session', 
-        component: SessionView,  
+        component: () => import("./views/SessionView.vue"),  
         beforeEnter: (to, from, next) => {
             syncLanguage()
             const currentRoute = sessionStorage.getItem('currentRoute')
@@ -75,7 +75,7 @@ export const routes = [
     {
         path: '/finish',
         name: 'finish',
-        component: FinishView,
+        component: () => import("./views/FinishView.vue"),
         beforeEnter: (to, from, next) => {
             syncLanguage()
             const currentRoute = sessionStorage.getItem('currentRoute')
@@ -90,7 +90,7 @@ export const routes = [
     },
     {
         path: '/:catchAll(.*)',
-        component: View404,
+        component: () => import("./views/View404.vue"),
         beforeEnter: (to, from, next) => {
             syncLanguage()
             clearDataWithoutCookie()
