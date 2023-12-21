@@ -1,10 +1,4 @@
 import { createRouter, createWebHistory } from "vue-router"
-import StartView from "./views/StartView.vue"
-import SessionView from "./views/SessionView.vue"
-import PersonalSurvey from "./views/PersonalSurvey.vue"
-import InstructionView from "./views/InstructionView.vue"
-import FinishView from './views/FinishView.vue'
-import View404 from './views/View404.vue'
 import { syncSessionId, decideOnContinueLayerVisibility, syncSessionStorage, finishSurvey, syncLanguage, clearDataWithoutCookie } from './routeUtils.js'
 import { setCookieBeforeInstruction, setCookieBeforeSession, setCookieBeforeSurvey } from "./cookiesUtils.js"
 
