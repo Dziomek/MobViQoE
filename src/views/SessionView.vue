@@ -4,19 +4,10 @@
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
 			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions" :windowDimensions="windowDimensions"
 			 :video="video" :videosWatched="excludedIndexes.length" />
-		<!-- <AssessmentLayer :videoId="1"/> -->
 		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
 			style="height: 100vh; width: 100vw;">
-			<source v-if="randomIndex == 0" src="https://d23dyxeqlo5psv.cloudfront.net/big_buck_bunny.mp4">
-			<source v-else-if="randomIndex == 1" src="https://upload.wikimedia.org/wikipedia/commons/3/3d/2022-05-28%2C_Geese_in_the_Bear_Creek_Park%2C_Redmond%2C_Wasington%2C_video3.webm">
-			<source v-else-if="randomIndex == 2" src="https://upload.wikimedia.org/wikipedia/commons/2/2e/Badger_collecting_bedding_material.webm">
-			<source v-else-if="randomIndex == 3" src="https://upload.wikimedia.org/wikipedia/commons/3/3a/Squirrel_eating_cicada.ogg">
-			<source v-else-if="randomIndex == 4" src="https://upload.wikimedia.org/wikipedia/commons/8/8b/2021-08-11%2C_Bison_crosses_the_road%2C_Yellowstone_National_Park.webm">
-			<!-- <source :key="randomIndex" :src="dynamicSrc"> -->
+			<source v-if="video" :src="video.src">
 		</video>
-		<!-- <span style="color: white;">
-			{{ accMeasurements.length }} {{  gyroMeasurements.length }}
-		</span> -->
 	</div>
 </template>
  
