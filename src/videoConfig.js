@@ -5,6 +5,7 @@ export const VIDEO_CONFIG = [
     // { index: 3, title: 'vid3', src: 'https://upload.wikimedia.org/wikipedia/commons/3/3a/Squirrel_eating_cicada.ogg'},
     // { index: 4, title: 'vid4', src: 'https://upload.wikimedia.org/wikipedia/commons/8/8b/2021-08-11%2C_Bison_crosses_the_road%2C_Yellowstone_National_Park.webm'},
     { index: 1, title: 'RUST_beach', src: 'https://mobviqoe-bucket.s3.eu-central-1.amazonaws.com/rust_beach_excellent.mp4'},
+    { index: 2, title: 'NETFLIX_ship3', src: 'https://mobviqoe-bucket.s3.eu-central-1.amazonaws.com/netflix_sheep3_bad.mp4'}
 ]
 
 export const VIDEOS_NUMBER = VIDEO_CONFIG.length
