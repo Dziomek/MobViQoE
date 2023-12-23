@@ -9,6 +9,6 @@ export const VIDEO_CONFIG = [
 
 export const VIDEOS_NUMBER = VIDEO_CONFIG.length
 
-export const SURVEY_LENGTH = 3
+export let SURVEY_LENGTH = 3
 
 if(SURVEY_LENGTH > VIDEOS_NUMBER) SURVEY_LENGTH = VIDEOS_NUMBER
