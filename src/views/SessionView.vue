@@ -110,7 +110,7 @@ function nextVideo() {
 		router.push({ name: 'finish' })
 		return
 	}
-	const randomNumber = Math.floor(Math.random() * 5)
+	const randomNumber = Math.floor(Math.random() * VIDEOS_NUMBER)
 	if (excludedIndexes.value.includes(randomNumber)) return nextVideo()
 	else {
 		randomIndex.value = randomNumber
@@ -220,6 +220,7 @@ watch(
 onMounted(() => {
 	setSessionState()
 	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
+	console.log(SURVEY_LENGTH, VIDEOS_NUMBER, randomIndex.value)
 })
 
 </script>
