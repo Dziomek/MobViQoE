@@ -8,6 +8,10 @@ export const useStore = defineStore('store', () => {
     const showContinueLayer = ref(null)
     const language = ref('en')
 
+    const VIDEOS = ref([])
+    const SURVEY_LENGTH = ref(3)
+    const VIDEOS_NUMBER = ref(0)
+
     function selectLanguage(lang='en', setSession=true, setCookie=true) {
         if(setSession) sessionStorage.setItem('language', lang)
         if(setCookie) Cookies.set('language', lang)
@@ -20,5 +24,5 @@ export const useStore = defineStore('store', () => {
         showContinueLayer.value = null
     }
 
-    return { sessionId, sessionState, showContinueLayer, language, clearStore, selectLanguage }
+    return { sessionId, sessionState, showContinueLayer, language, clearStore, selectLanguage, VIDEOS, SURVEY_LENGTH, VIDEOS_NUMBER }
 })

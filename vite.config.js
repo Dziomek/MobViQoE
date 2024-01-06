@@ -6,4 +6,7 @@ import vue from '@vitejs/plugin-vue'
 export default defineConfig({
   // base: '/MobViQoE',
   plugins: [vue()],
+  define: {
+    global: {},
+  }
 })

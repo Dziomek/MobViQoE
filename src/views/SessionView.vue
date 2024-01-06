@@ -1,5 +1,8 @@
 <template>
 	<div class="fixed top-0 left-0 flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
+		<div v-if="VIDEOS.length > 0">
+
+		
 		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
 		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
 			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions" :windowDimensions="windowDimensions"
@@ -8,13 +11,14 @@
 			style="height: 100vh; width: 100vw;">
 			<source v-if="video" :src="video.src">
 		</video>
+		</div>
 	</div>
 </template>
  
 <script setup>
 import { onMounted, ref, inject, watch, defineAsyncComponent } from 'vue'
 import { useRouter } from 'vue-router';
-import { VIDEO_CONFIG, VIDEOS_NUMBER, SURVEY_LENGTH } from '../videoConfig.js'
+// import { VIDEO_CONFIG, VIDEOS_NUMBER, SURVEY_LENGTH } from '../videoConfig.js'
 import { useStore } from '../store'
 import { storeToRefs } from 'pinia'
 import { setCookieBeforeSession } from '../cookiesUtils.js'
@@ -30,15 +34,15 @@ const router = useRouter() // router element
 // STORE
 
 const store = useStore()
-const { sessionState } = storeToRefs(store)
+const { sessionState, VIDEOS, VIDEOS_NUMBER, SURVEY_LENGTH } = storeToRefs(store)
 
 /// VIDEO
 
 const videoElement = ref()
 const playToggled = ref(false)
 const videoEnded = ref(false)
-const randomIndex = ref(Math.floor(Math.random() * VIDEOS_NUMBER))
-const video = ref(VIDEO_CONFIG[randomIndex.value])
+const randomIndex = ref(Math.floor(Math.random() * VIDEOS_NUMBER.value))
+const video = ref(VIDEOS.value[randomIndex.value])
 const excludedIndexes = ref([randomIndex.value])
 
 function toggleAppFullScreen() {
@@ -106,16 +110,16 @@ let gyroIntervalDelete
 let connectionInterval
 
 function nextVideo() {
-	if (excludedIndexes.value.length == SURVEY_LENGTH) {
+	if (excludedIndexes.value.length == SURVEY_LENGTH.value) {
 		router.push({ name: 'finish' })
 		return
 	}
-	const randomNumber = Math.floor(Math.random() * VIDEOS_NUMBER)
+	const randomNumber = Math.floor(Math.random() * VIDEOS_NUMBER.value)
 	if (excludedIndexes.value.includes(randomNumber)) return nextVideo()
 	else {
 		randomIndex.value = randomNumber
 		excludedIndexes.value.push(randomNumber)
-		video.value = VIDEO_CONFIG[randomIndex.value]
+		video.value = VIDEOS.value[randomIndex.value]
 		playToggled.value = false
 		videoEnded.value = false
 		///
@@ -142,7 +146,7 @@ function setSessionState() {
 		randomIndex.value = item.videoIndex
 		excludedIndexes.value = item.excludedIndexes
 		sessionState.value = item
-		video.value = VIDEO_CONFIG[randomIndex.value]
+		video.value = VIDEOS.value[randomIndex.value]
 	} else {
 		updateSessionState()
 	}
@@ -217,10 +221,17 @@ watch(
 	}
 )
 
+watch(
+	() => VIDEOS.value, 
+	() => {
+		video.value = VIDEOS.value[randomIndex.value]
+	}
+)
+
 onMounted(() => {
 	setSessionState()
 	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
-	console.log(SURVEY_LENGTH, VIDEOS_NUMBER, randomIndex.value)
+	console.log(SURVEY_LENGTH.value, VIDEOS_NUMBER.value, randomIndex.value, VIDEOS.value)
 })
 
 </script>

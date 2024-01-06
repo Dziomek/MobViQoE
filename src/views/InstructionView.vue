@@ -101,14 +101,15 @@
 import Button from 'primevue/button'
 import { useRouter } from 'vue-router'
 import MenuComponent from '../components/MenuComponent.vue';
-import { SURVEY_LENGTH } from '../videoConfig';
 import { useStore } from '../store';
 import { storeToRefs } from 'pinia';
+import { inject } from 'vue'
 
 const router = useRouter()
 
 const store = useStore()
-const { language } = storeToRefs(store)
+const { language, SURVEY_LENGTH } = storeToRefs(store)
+
 
 function navigateToSurvey() {
     router.push({ name: 'survey' })

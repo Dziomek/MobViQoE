@@ -126,7 +126,7 @@ import { ref } from 'vue'
 import { db } from '../firebaseConfig'
 import { useStore } from "../store"
 import { storeToRefs } from 'pinia'
-import { SURVEY_LENGTH } from '../videoConfig.js'
+// import { SURVEY_LENGTH } from '../videoConfig.js'
 import Rating from 'primevue/rating'
 import MenuComponent from "./MenuComponent.vue"
 
@@ -136,7 +136,7 @@ const gyroAvg = ref(getGyroAvg())
 const connectionDataAvg = ref(getConnectionDataAvg())
 
 const store = useStore()
-const { sessionId, language } = storeToRefs(store)
+const { sessionId, language, SURVEY_LENGTH } = storeToRefs(store)
 
 const measurementsRef = collection(db, "measurements")
 
