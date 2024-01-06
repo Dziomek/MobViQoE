@@ -1,16 +1,14 @@
 <template>
 	<div class="fixed top-0 left-0 flex flex-col w-full min-h-full overflow-auto" style="background-color: black;">
-		<div v-if="VIDEOS.length > 0">
-
-		
-		<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
-		<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
-			:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions" :windowDimensions="windowDimensions"
-			 :video="video" :videosWatched="excludedIndexes.length" />
-		<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
-			style="height: 100vh; width: 100vw;">
-			<source v-if="video" :src="video.src">
-		</video>
+		<div v-if="VIDEOS.length > 0 && VIDEOS_NUMBER > 0">
+			<ControlsLayer v-if="!playToggled" @play="playVideo" @toggleFullScreen="toggleAppFullScreen" :video="video" />
+			<AssessmentLayer v-if="videoEnded" @nextVideo="nextVideo" :accMeasurements="accMeasurements"
+				:gyroMeasurements="gyroMeasurements" :connectionData="connectionData" :screenDimensions="screenDimensions" :windowDimensions="windowDimensions"
+				:video="video" :videosWatched="excludedIndexes.length" />
+			<video class="fixed top-0 left-0" :key="randomIndex" ref="videoElement" :controls="false"
+				style="height: 100vh; width: 100vw;">
+				<source v-if="video" :src="video.src">
+			</video>
 		</div>
 	</div>
 </template>
@@ -231,7 +229,7 @@ watch(
 onMounted(() => {
 	setSessionState()
 	setCookieBeforeSession(randomIndex.value, excludedIndexes.value)
-	console.log(SURVEY_LENGTH.value, VIDEOS_NUMBER.value, randomIndex.value, VIDEOS.value)
+	// console.log(SURVEY_LENGTH.value, VIDEOS_NUMBER.value, randomIndex.value)
 })
 
 </script>
