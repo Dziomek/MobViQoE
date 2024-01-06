@@ -24,5 +24,8 @@ export const useStore = defineStore('store', () => {
         showContinueLayer.value = null
     }
 
-    return { sessionId, sessionState, showContinueLayer, language, clearStore, selectLanguage, VIDEOS, SURVEY_LENGTH, VIDEOS_NUMBER }
+    return { sessionId, sessionState, showContinueLayer, language, 
+        clearStore, selectLanguage, VIDEOS, SURVEY_LENGTH, VIDEOS_NUMBER }
 })
+
+
